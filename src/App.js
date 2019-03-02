@@ -1,28 +1,46 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { connect } from 'react-redux';
+import { mobileView, desktopView } from './store/actions/actions';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+	componentDidMount() {
+		window.addEventListener('load', () => {
+			if (window.innerWidth > 760) {
+				this.props.handleDesktopView();
+			} else {
+				this.props.handleMobileView();
+			}
+		});
+		window.addEventListener('resize', () => {
+			if (window.innerWidth > 760) {
+				this.props.handleDesktopView();
+			} else {
+				this.props.handleMobileView();
+			}
+		});
+	}
+	render() {
+		return (
+			<div>
+				<button onClick={this.props.handleDesktopView}>click</button>
+			</div>
+		);
+	}
 }
 
-export default App;
+const mapStateToProps = state => {
+	return {
+		view: state.screenView
+	};
+};
+const mapDispatchToProps = dispatch => {
+	return {
+		handleDesktopView: () => dispatch(desktopView()),
+		handleMobileView: () => dispatch(mobileView())
+	};
+};
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(App);
