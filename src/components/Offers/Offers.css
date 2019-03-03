@@ -1,0 +1,11 @@
+.OfferContainer {
+  display: flex;
+  overflow-x: scroll;
+  padding: 10px;
+}
+.OfferImage {
+  width: 70px;
+  height: 70px;
+  margin-right: 10px;
+  border-radius: 7px;
+}
