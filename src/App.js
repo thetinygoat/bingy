@@ -3,12 +3,13 @@ import { connect } from 'react-redux';
 import { mobileView, desktopView } from './store/actions/actions';
 import Home from './pages/Home/Home';
 import ContentPage from './pages/ContentPage/ContentPage';
+import BottomBar from './components/BottomBar/BottomBar';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 class App extends Component {
 	componentDidMount() {
 		window.addEventListener('load', () => {
-			if (window.innerWidth > 760) {
+			if (window.innerWidth > 730) {
 				this.props.handleDesktopView();
 			} else {
 				this.props.handleMobileView();
@@ -25,10 +26,13 @@ class App extends Component {
 	render() {
 		return (
 			<BrowserRouter>
-				<Switch>
-					<Route path="/" exact component={Home} />
-					<Route path="/content/:id" component={ContentPage} />
-				</Switch>
+				<div>
+					<Switch>
+						<Route path="/" exact component={Home} />
+						<Route path="/content/:id" component={ContentPage} />
+					</Switch>
+					{this.props.view.isMobile && <BottomBar />}
+				</div>
 			</BrowserRouter>
 		);
 	}

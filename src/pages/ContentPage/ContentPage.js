@@ -10,7 +10,7 @@ const Container = styled.section`
 	justify-content: space-around;
 	padding: 1em;
 	color: #fff;
-	@media (max-width: 730px) {
+	@media (max-width: 769px) {
 		flex-direction: column;
 	}
 `;
@@ -19,7 +19,8 @@ const MovieData = styled.section`
 	flex-direction: column;
 	max-width: 70%;
 	min-width: 70%;
-	@media (max-width: 730px) {
+	padding: 0.5em;
+	@media (max-width: 769px) {
 		justify-content: center;
 		max-width: 100%;
 		text-align: center;
@@ -29,6 +30,7 @@ const MoviePoster = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: start;
+	padding: 0.5;
 `;
 const OfferSkeleton = styled.div`
 	display: flex;
@@ -36,7 +38,45 @@ const OfferSkeleton = styled.div`
 
 const TitleSkeleton = styled.div`
 	display: flex;
-	justify-content: center;
+	@media (max-width: 769px) {
+		justify-content: center;
+	}
+`;
+const Stats = styled.p`
+	color: grey;
+	padding: 0.6em;
+	font-size: 0.9em;
+`;
+const Description = styled.div`
+	text-align: left;
+`;
+const ContentTitle = styled.h1`
+	font-size: 2em;
+`;
+const SubHeading = styled.p`
+	font-size: 1.3em;
+	font-weight: bold;
+	margin: 0.7em 0;
+`;
+const GenreContainer = styled.section`
+	display: flex;
+	padding: 0.6em;
+	margin: 0.5em;
+	// align-items: center;
+	@media (max-width: 768px) {
+		justify-content: center;
+	}
+`;
+const Genre = styled.span`
+display: flex;
+align-items: center
+	background-color: #00e27e;
+	margin: 0 0.4em 0 0;
+	color: #081118;
+	padding: 0.45em;
+	font-size: 0.8em;
+	border-radius: 20px;
+	font-weight: bold;
 `;
 const ContentPage = props => {
 	const [contentData, setContentData] = useState({
@@ -52,9 +92,7 @@ const ContentPage = props => {
 		runtime: ''
 	});
 	const [loading, setLoading] = useState(false);
-	const ContentTitle = styled.h1`
-		font-size: 2em;
-	`;
+
 	const fetchFullContentData = async () => {
 		setLoading(true);
 		let res = await axios.post('/get-full-data', {
@@ -62,7 +100,7 @@ const ContentPage = props => {
 		});
 		console.log(res.data);
 		setContentData({
-			genres: res.data.genere_mapping,
+			genres: res.data.genre_mapping,
 			offers: res.data.offers,
 			scoring: res.data.scoring[0],
 			description: res.data.short_description,
@@ -107,26 +145,30 @@ const ContentPage = props => {
 	let content = (
 		<Container bg={contentData.poster}>
 			<MoviePoster>
-				<img src={contentData.poster} />
+				<img src={contentData.poster} width="160px" height="236px" />
 			</MoviePoster>
 			<MovieData>
 				<ContentTitle>{contentData.title}</ContentTitle>
-				<p>
-					{contentData.runtime} {contentData.releaseYear}
-				</p>
+				<GenreContainer>
+					{contentData.genres.map(genre => {
+						return <Genre key={genre}>{genre}</Genre>;
+					})}
+				</GenreContainer>
 				<Offers offers={contentData.offers} />
-				<p>{shortDescriptionState ? description : contentData.description}</p>
-				{}
-				{contentData.description.length > 140 ? (
-					<span
-						style={{ textDecoration: 'underline', cursor: 'pointer' }}
-						onClick={() => {
-							setShortDescriptionState(!shortDescriptionState);
-						}}
-					>
-						read {shortDescriptionState ? 'more' : 'less'}
-					</span>
-				) : null}
+				<Description>
+					<SubHeading>Description</SubHeading>
+					<p>{shortDescriptionState ? description : contentData.description}</p>
+					{contentData.description.length > 140 ? (
+						<span
+							style={{ textDecoration: 'underline', cursor: 'pointer' }}
+							onClick={() => {
+								setShortDescriptionState(!shortDescriptionState);
+							}}
+						>
+							read {shortDescriptionState ? 'more' : 'less'}
+						</span>
+					) : null}
+				</Description>
 			</MovieData>
 		</Container>
 	);
