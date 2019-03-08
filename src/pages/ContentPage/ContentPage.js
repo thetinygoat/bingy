@@ -62,6 +62,10 @@ const RatingProvider = styled.img`
 	height: 1.5em;
 	margin: 0.5em;
 `;
+const RatingContainer = styled.span`
+	display: flex;
+	align-items: center;
+`;
 const Tags = styled.section`
 	display: flex;
 	padding: 1em;
@@ -167,6 +171,26 @@ const ContentPage = props => {
 		description = contentData.description.substring(0, 140) + '....';
 	} else description = contentData.description;
 
+	let tomatoRating = null;
+	if (!contentData.tomatoRating) {
+		tomatoRating = null;
+	} else {
+		tomatoRating = (
+			<RatingContainer>
+				<RatingProvider src={rotten} /> {contentData.tomatoRating + '%'}
+			</RatingContainer>
+		);
+	}
+	let imdbRating = null;
+	if (!contentData.imdbRating) {
+		imdbRating = null;
+	} else {
+		imdbRating = (
+			<RatingContainer>
+				<RatingProvider src={imdb} /> {contentData.imdbRating + '/10'}
+			</RatingContainer>
+		);
+	}
 	return (
 		<div>
 			<Bg bg={contentData.poster} />
@@ -187,8 +211,8 @@ const ContentPage = props => {
 				<Poster src={contentData.poster} />
 				<Heading>{contentData.title}</Heading>
 				<Ratings>
-					<RatingProvider src={rotten} /> {contentData.tomatoRating}%
-					<RatingProvider src={imdb} /> {contentData.imdbRating}/10
+					{tomatoRating}
+					{imdbRating}
 				</Ratings>
 				<Tags>
 					{contentData.genres.slice(0, 3).map(genre => {
