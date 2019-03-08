@@ -51,7 +51,7 @@ const TopActions = styled.section`
 	display: flex;
 	justify-content: space-between;
 	width: 100%;
-	padding: 2em;
+	padding: 1.5em;
 `;
 const Ratings = styled.section`
 	display: flex;
@@ -93,8 +93,8 @@ const ListAction = styled.div`
 	border-radius: 100px;
 	font-size: 0.9em;
 	width: 7.5em;
-	justify-content: space-around;
-	text-align: left;
+	// justify-content: center;
+	font-weight: bold;
 `;
 const Description = styled.section`
 	text-align: left !important;
@@ -173,10 +173,16 @@ const ContentPage = props => {
 			<Gradient />
 			<ContentContainer>
 				<TopActions>
-					<i className="material-icons" onClick={() => props.history.goBack()}>
+					<i
+						className="material-icons"
+						onClick={() => props.history.goBack()}
+						style={{ cursor: 'pointer' }}
+					>
 						arrow_back
 					</i>
-					<i className="material-icons">share</i>
+					<i className="material-icons" style={{ cursor: 'pointer' }}>
+						share
+					</i>
 				</TopActions>
 				<Poster src={contentData.poster} />
 				<Heading>{contentData.title}</Heading>

@@ -11,6 +11,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #0a1016;
   color: #e4e4e4;
+  margin-top: 3em;
 }
 
 code {

@@ -5,6 +5,7 @@ import Home from './pages/Home/Home';
 import ContentPage from './pages/ContentPage/ContentPage';
 import BottomBar from './components/BottomBar/BottomBar';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import Navbar from './components/Navbar/Navbar';
 
 class App extends Component {
 	componentDidMount() {
@@ -27,6 +28,7 @@ class App extends Component {
 		return (
 			<BrowserRouter>
 				<div>
+					<Navbar />
 					<Switch>
 						<Route path="/" exact component={Home} />
 						<Route path="/content/:id" component={ContentPage} />
