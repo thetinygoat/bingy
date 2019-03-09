@@ -6,7 +6,7 @@ import ContentPage from './pages/ContentPage/ContentPage';
 import BottomBar from './components/BottomBar/BottomBar';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
-
+import Search from './pages/Search/Search';
 class App extends Component {
 	componentDidMount() {
 		window.addEventListener('load', () => {
@@ -31,6 +31,7 @@ class App extends Component {
 					<Navbar />
 					<Switch>
 						<Route path="/" exact component={Home} />
+						<Route path="/search" component={Search} />
 						<Route path="/content/:id" component={ContentPage} />
 					</Switch>
 					{this.props.view.isMobile && <BottomBar />}

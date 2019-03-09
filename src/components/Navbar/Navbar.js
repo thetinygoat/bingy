@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 const Navbar = styled.section`
 	background-color: #0a1016;
 	position: fixed;
@@ -30,7 +31,9 @@ export class MobileTopBar extends Component {
 					<h1>Bingy</h1>
 					<Actions>
 						<Action>
-							<i className="material-icons">search</i>
+							<Link to="/search">
+								<i className="material-icons">search</i>
+							</Link>
 						</Action>
 						<Action last>
 							<i className="material-icons">settings</i>

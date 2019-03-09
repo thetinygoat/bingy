@@ -25,6 +25,7 @@ const Gradient = styled.div`
 	);
 	position: fixed;
 	z-index: -999;
+	top: 0;
 `;
 const ContentContainer = styled.section`
 	display: flex;
@@ -97,7 +98,7 @@ const ListAction = styled.div`
 	border-radius: 100px;
 	font-size: 0.9em;
 	width: 7.5em;
-	// justify-content: center;
+	justify-content: center;
 	font-weight: bold;
 `;
 const Description = styled.section`
@@ -118,6 +119,58 @@ const Stat = styled.div`
 const Hr = styled.hr`
 	margin: 0.5em 0;
 `;
+const PosterSkeleton = styled.div`
+	height: 236px;
+	width: 166px;
+	background-color: #223241;
+	margin-bottom: 0.5em;
+	border-radius: 10px;
+`;
+const HeadingSkeleton = styled.div`
+	background-color: #223241;
+	width: 10em;
+	height: 1.5em;
+`;
+const GenreSkeleton = styled.div`
+	background-color: #223241;
+	padding: 0.5em;
+	margin: 0.3em;
+	border-radius: 100px;
+	width: 3em;
+	height: 0.5em;
+`;
+const SubHeadingSkeleton = styled.div`
+	background-color: #223241;
+	width: 7em;
+	height: 1em;
+	margin-bottom: 0.5em;
+`;
+const OfferSkeleton = styled.div`
+	width: 60px;
+	height: 60px;
+	border-radius: 200px;
+	background-color: #223241;
+	margin: 0.3em;
+`;
+const OfferSkeletonContainer = styled.div`
+	display: flex;
+	overflow-x: auto;
+	justify-content: flex-end;
+	padding: 0.7em;
+`;
+const ParagraphSkeleton = styled.div`
+	height: 0.5em;
+	background-color: #223241;
+	margin-bottom: 0.4em;
+`;
+const ListActionSkeleton = styled.div`
+	background-color: #223241;
+	padding: 1.3em;
+	margin: 0.4em;
+	border-radius: 100px;
+	font-size: 0.9em;
+	width: 7.5em;
+`;
 const ContentPage = props => {
 	const [contentData, setContentData] = useState({
 		genres: [],
@@ -132,10 +185,9 @@ const ContentPage = props => {
 		title: '',
 		runtime: ''
 	});
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 
 	const fetchFullContentData = async () => {
-		setLoading(true);
 		let res = await axios.post('/get-full-data', {
 			unique_id: props.match.params.id
 		});
@@ -191,6 +243,29 @@ const ContentPage = props => {
 			</RatingContainer>
 		);
 	}
+
+	const renderSkeletons = (type, num) => {
+		let arr = [];
+		let skeletonType = null;
+		switch (type) {
+		case 'Genre':
+			skeletonType = <GenreSkeleton />;
+			break;
+		case 'Offer':
+			skeletonType = <OfferSkeleton />;
+			break;
+		case 'Para':
+			skeletonType = <ParagraphSkeleton />;
+			break;
+		}
+		for (let i = 0; i < num; i++) {
+			arr.push(skeletonType);
+		}
+		return arr;
+	};
+	let genreSkeleton = renderSkeletons('Genre', 3);
+	let offerSekeleton = renderSkeletons('Offer', 3);
+	let paragraphSekeleton = renderSkeletons('Para', 6);
 	return (
 		<div>
 			<Bg bg={contentData.poster} />
@@ -208,38 +283,63 @@ const ContentPage = props => {
 						share
 					</i>
 				</TopActions>
-				<Poster src={contentData.poster} />
-				<Heading>{contentData.title}</Heading>
+				{loading ? <PosterSkeleton /> : <Poster src={contentData.poster} />}
+				{loading ? <HeadingSkeleton /> : <Heading>{contentData.title}</Heading>}
 				<Ratings>
 					{tomatoRating}
 					{imdbRating}
 				</Ratings>
 				<Tags>
-					{contentData.genres.slice(0, 3).map(genre => {
-						return <Genre key={genre}>{genre}</Genre>;
-					})}
+					{loading
+						? genreSkeleton
+						: contentData.genres.slice(0, 3).map(genre => {
+							return <Genre key={genre}>{genre}</Genre>;
+						  })}
 				</Tags>
 				<OfferContainer>
-					<SubHeading>Stream It On</SubHeading>
-					<Offers offers={contentData.offers} />
+					{loading ? null : <SubHeading>Stream It On</SubHeading>}
+					{loading ? (
+						<OfferSkeletonContainer>{offerSekeleton}</OfferSkeletonContainer>
+					) : (
+						<Offers offers={contentData.offers} />
+					)}
 				</OfferContainer>
 				<ListActions>
-					<ListAction>
-						<i className="material-icons">add</i> Want To See
-					</ListAction>
-					<ListAction>
-						<i className="material-icons">done</i>Seen It
-					</ListAction>
+					{loading ? (
+						<ListActionSkeleton />
+					) : (
+						<ListAction>
+							<i className="material-icons">add</i> Want To See
+						</ListAction>
+					)}
+					{loading ? (
+						<ListActionSkeleton />
+					) : (
+						<ListAction>
+							<i className="material-icons">done</i>Seen It
+						</ListAction>
+					)}
 				</ListActions>
 				<Description>
-					<SubHeading>Description</SubHeading>
-					<p>{shortDescriptionState ? description : contentData.description}</p>
+					{loading ? (
+						<SubHeadingSkeleton />
+					) : (
+						<SubHeading>Description</SubHeading>
+					)}
+					{loading ? (
+						paragraphSekeleton
+					) : (
+						<p>
+							{shortDescriptionState ? description : contentData.description}
+						</p>
+					)}
 					{contentData.description.length > 140 ? (
 						<p onClick={() => setShortDescriptionState(!shortDescriptionState)}>
 							{shortDescriptionState ? 'more' : 'less'}
 						</p>
 					) : null}
-					<Hr />
+
+					{loading ? null : <Hr />}
 					<Stats>
 						<Stat>
 							<i className="material-icons">access_time</i>{' '}

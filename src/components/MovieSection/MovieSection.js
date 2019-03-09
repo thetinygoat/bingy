@@ -3,9 +3,15 @@ import MovieScroller from './MovieScroller/MovieScroller';
 import styled from 'styled-components';
 const MovieSectionContainer = styled.section`
 	display: flex;
-	overflow-x: scroll;
-	margin: 1em 0;
+	overflow-x: auto;
 	flex-direction: column;
+`;
+const SubHeading = styled.h1`
+	font-size: 1.3em;
+	margin-bottom: 0.5em;
+`;
+const Container = styled.section`
+	padding: 0.5em;
 `;
 const MovieSection = props => {
 	let data = Object.keys(props.movieData).map(key => {
@@ -16,10 +22,12 @@ const MovieSection = props => {
 		<div>
 			{data.map(category => {
 				return (
-					<MovieSectionContainer key={category.category}>
-						{category.category}
-						<MovieScroller category={category} />
-					</MovieSectionContainer>
+					<Container key={category.category}>
+						<SubHeading>{category.category}</SubHeading>
+						<MovieSectionContainer>
+							<MovieScroller category={category} />
+						</MovieSectionContainer>
+					</Container>
 				);
 			})}
 		</div>

@@ -1,5 +1,4 @@
 import React from 'react';
-import './Offers.css';
 import amazonPrimeVideo from './logos/amazon-prime-video.jpeg';
 import appleItunes from './logos/apple-itunes.jpeg';
 import erosNow from './logos/eros-now.jpeg';
@@ -17,6 +16,20 @@ import viu from './logos/viu.jpeg';
 import voot from './logos/voot.jpeg';
 import youtube from './logos/youtube.jpeg';
 import zee5 from './logos/zee5.jpeg';
+import styled from 'styled-components';
+const Offer = styled.img`
+	width: 60px;
+	height: 60px;
+	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+	border-radius: 200px;
+	margin: 0.3em;
+`;
+
+const OfferContainer = styled.div`
+	display: flex;
+	overflow-x: auto;
+	justify-content: center;
+`;
 
 export default function Offers(props) {
 	const offers = props.offers.map(offer => {
@@ -81,10 +94,10 @@ export default function Offers(props) {
 		} else {
 			return (
 				<a href={offer.urls.standard_web} key={offer.provider_mapping}>
-					<img src={src} className="OfferImage" alt={offer.provider_mapping} />
+					<Offer src={src} alt={offer.provider_mapping} />
 				</a>
 			);
 		}
 	});
-	return <div className="OfferContainer">{offers}</div>;
+	return <OfferContainer>{offers}</OfferContainer>;
 }
