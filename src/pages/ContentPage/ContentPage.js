@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../../axios';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import Offers from '../../components/Offers/Offers';
 import rotten from './rotten.png';
 import imdb from './imdb.png';
@@ -257,6 +257,8 @@ const ContentPage = props => {
 		case 'Para':
 			skeletonType = <ParagraphSkeleton />;
 			break;
+		default:
+			skeletonType = null;
 		}
 		for (let i = 0; i < num; i++) {
 			arr.push(skeletonType);

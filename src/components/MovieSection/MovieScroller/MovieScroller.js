@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import React from 'react';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const Poster = styled.img`
@@ -10,8 +10,6 @@ const Poster = styled.img`
 const Scroller = styled.section`
 	display: flex;
 `;
-
-const shine = keyframes``;
 const MovieScroller = props => {
 	let data = props.category.content[0].map(movie => {
 		return (

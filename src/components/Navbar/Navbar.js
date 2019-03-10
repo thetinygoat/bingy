@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import Search from '../../pages/Search/Search';
 const Navbar = styled.section`
 	background-color: #0a1016;
 	position: fixed;
@@ -24,23 +24,44 @@ const Action = styled.div`
 	margin-right: ${props => (props.last ? '0px' : '20px')};
 `;
 export class MobileTopBar extends Component {
+	state = {
+		isSearchOpen: false
+	};
+	handleSearchPageClose = () => {
+		this.setState(state => {
+			return {
+				isSearchOpen: !state.isSearchOpen
+			};
+		});
+	};
 	render() {
 		return (
-			<Navbar>
-				<Container>
-					<h1>Bingy</h1>
-					<Actions>
-						<Action>
-							<Link to="/search">
+			<div>
+				<Navbar>
+					<Container>
+						<h1>Bingy</h1>
+						<Actions>
+							<Action
+								onClick={() =>
+									this.setState(state => {
+										return {
+											isSearchOpen: !state.isSearchOpen
+										};
+									})
+								}
+							>
 								<i className="material-icons">search</i>
-							</Link>
-						</Action>
-						<Action last>
-							<i className="material-icons">settings</i>
-						</Action>
-					</Actions>
-				</Container>
-			</Navbar>
+							</Action>
+							<Action last>
+								<i className="material-icons">settings</i>
+							</Action>
+						</Actions>
+					</Container>
+				</Navbar>
+				{this.state.isSearchOpen && (
+					<Search closeSearch={this.handleSearchPageClose} />
+				)}
+			</div>
 		);
 	}
 }
