@@ -215,7 +215,7 @@ const ContentPage = props => {
 	};
 	useEffect(() => {
 		fetchFullContentData();
-	}, []);
+	}, [props.match.params.id]);
 
 	const [shortDescriptionState, setShortDescriptionState] = useState(true);
 	let description;
