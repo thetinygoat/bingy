@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import Offers from '../../components/Offers/Offers';
 import rotten from './rotten.png';
 import imdb from './imdb.png';
-
+import { Link } from 'react-router-dom';
+import Spinner from '../../components/Spinner/Spinner';
 const Bg = styled.div`
 	height: 100vh;
 	width: 100%;
@@ -31,14 +32,15 @@ const ContentContainer = styled.section`
 	display: flex;
 	width: 85%;
 	margin: auto;
-	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	text-align: center;
+	flex-direction: column;
+	@media (max-width: 730px) {
+	}
 `;
 const Poster = styled.img`
 	border-radius: 10px;
-	margin: 0.5em;
 `;
 const Heading = styled.h1`
 	font-size: 2em;
@@ -52,58 +54,65 @@ const TopActions = styled.section`
 	display: flex;
 	justify-content: space-between;
 	width: 100%;
-	padding: 1.5em;
+	padding: 1em;
 `;
 const Ratings = styled.section`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	padding: 0.5em 0.5em 0.5em 0;
 `;
 const RatingProvider = styled.img`
 	height: 1.5em;
-	margin: 0.5em;
+	margin-right: 0.5em;
 `;
 const RatingContainer = styled.span`
 	display: flex;
 	align-items: center;
+	margin-right: 0.5em;
 `;
 const Tags = styled.section`
 	display: flex;
-	padding: 1em;
 	flex-wrap: wrap;
 	justify-content: center;
+	margin: 0.5em 0.5em 0.5em 0;
 `;
 const Genre = styled.div`
 	background: rgba(229, 229, 229, 0.15);
-	padding: 0.5em;
-	margin: 0.3em;
 	border-radius: 100px;
 	font-size: 0.85em;
 	font-weight: bold;
 	text-align: center;
+	padding: 0.6em;
+	margin-right: 0.3em;
 `;
 const OfferContainer = styled.section`
-	display: flex;import Skeleton from 'react-loading-skeleton';
+	display: flex;
 	flex-direction: column;
+	align-items: flex-start;
+	@media (max-width: 730px) {
+		align-items: center;
+	}
 `;
 const ListActions = styled.section`
 	display: flex;
+	padding: 1em 1em 1em 0;
+	justify-content: center;
 `;
 const ListAction = styled.div`
 	background: rgba(229, 229, 229, 0.15);
 	display: flex;
 	align-items: center;
-	padding: 1em;
-	margin: 0.4em;
 	border-radius: 100px;
 	font-size: 0.9em;
 	width: 7.5em;
 	justify-content: center;
 	font-weight: bold;
+	padding: 0.8em;
+	margin-right: 0.5em;
 `;
 const Description = styled.section`
 	text-align: left !important;
-	padding: 1em;
 `;
 const Stats = styled.div`
 	display: flex;
@@ -111,65 +120,74 @@ const Stats = styled.div`
 `;
 const Stat = styled.div`
 	display: flex;
-	margin: 0.5em;
 	justify-content: space-around;
 	width: 6em;
 	text-align: left;
 `;
 const Hr = styled.hr`
-	margin: 0.5em 0;
+	margin: 1em 0;
 `;
-const PosterSkeleton = styled.div`
-	height: 236px;
-	width: 166px;
-	background-color: #223241;
-	margin-bottom: 0.5em;
-	border-radius: 10px;
-`;
-const HeadingSkeleton = styled.div`
-	background-color: #223241;
-	width: 10em;
-	height: 1.5em;
-`;
-const GenreSkeleton = styled.div`
-	background-color: #223241;
-	padding: 0.5em;
-	margin: 0.3em;
-	border-radius: 100px;
-	width: 3em;
-	height: 0.5em;
-`;
-const SubHeadingSkeleton = styled.div`
-	background-color: #223241;
-	width: 7em;
-	height: 1em;
-	margin-bottom: 0.5em;
-`;
-const OfferSkeleton = styled.div`
-	width: 60px;
-	height: 60px;
-	border-radius: 200px;
-	background-color: #223241;
-	margin: 0.3em;
-`;
-const OfferSkeletonContainer = styled.div`
+const PosterContainer = styled.div`
 	display: flex;
-	overflow-x: auto;
+	align-items: flex-start;
+	width: 20%;
+	margin: 0 auto;
 	justify-content: flex-end;
-	padding: 0.7em;
+	@media (max-width: 730px) {
+		justify-content: center;
+		padding: 0;
+		margin-bottom: 0.5em;
+	}
 `;
-const ParagraphSkeleton = styled.div`
-	height: 0.5em;
-	background-color: #223241;
-	margin-bottom: 0.4em;
+const InfoContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	width:70%
+	margin:auto;
+	align-items: flex-start;
+	justify-content: center;
+	box-sizing: border-box;
+	@media (max-width: 730px) {
+		align-items: center;
+		padding: 0;
+		width: 90%
+	}
 `;
-const ListActionSkeleton = styled.div`
-	background-color: #223241;
-	padding: 1.3em;
-	margin: 0.4em;
-	border-radius: 100px;
-	font-size: 0.9em;
-	width: 7.5em;
+const Layout = styled.div`
+	display: flex;
+	@media (max-width: 730px) {
+		flex-direction: column;
+	}
+`;
+const Scroller = styled.div`
+	display: flex;
+
+	overflow: auto;
+`;
+const ScrollerContainer = styled.section`
+	padding: 1em;
+	display: flex;
+	width: 90%;
+	flex-direction: column;
+	text-align: left !important;
+`;
+const ReccomendedPoster = styled.img`
+	width: 130px;
+	margin-right: 0.4em;
+	border-radius: 10px;
+	@media (max-width: 730px) {
+		width: 120px;
+	}
+`;
+const Title = styled.p`
+	text-decoration: none;
+	color: #e2e2e2;
+	font-size: .8em;
+	margin-top: .2em
+	font-weight: bold;
+	display: flex
+	flex-wrap:wrap
+	width: 90%
 `;
 const ContentPage = props => {
 	const [contentData, setContentData] = useState({
@@ -185,36 +203,44 @@ const ContentPage = props => {
 		title: '',
 		runtime: ''
 	});
+	const [reccomendations, setReccomendations] = useState([]);
 	const [loading, setLoading] = useState(true);
 
 	const fetchFullContentData = async () => {
-		let res = await axios.post('/get-full-data', {
+		let res = await axios.post('/movie-page', {
 			unique_id: props.match.params.id
 		});
 		console.log(res.data);
+		let movieData = res.data.movie;
+		let reccomendedData = res.data.reccomended_movies;
 		let imdbRating, tomatoRating;
-		res.data.scoring.map(m => {
+		movieData.scoring.map(m => {
 			if (m.provider_type === 'tomato:meter') tomatoRating = m.value;
 			else if (m.provider_type === 'imdb:score') imdbRating = m.value;
 		});
 		setContentData({
-			genres: res.data.genre_mapping,
-			offers: res.data.offers,
-			scoring: res.data.scoring,
-			description: res.data.short_description,
-			releaseYear: res.data.original_release_year,
-			unique_id: res.data.unique_id,
-			_id: res.data._id,
-			poster: res.data.poster,
-			title: res.data.title,
-			runtime: res.data.runtime,
+			genres: movieData.genre_mapping,
+			offers: movieData.offers,
+			scoring: movieData.scoring,
+			description: movieData.short_description,
+			releaseYear: movieData.original_release_year,
+			unique_id: movieData.unique_id,
+			_id: movieData._id,
+			poster: movieData.poster,
+			title: movieData.title,
+			runtime: movieData.runtime,
 			imdbRating,
 			tomatoRating
 		});
+		setReccomendations(reccomendedData);
 		setLoading(false);
 	};
 	useEffect(() => {
+		window.scrollTo(0, 0);
 		fetchFullContentData();
+		return () => {
+			setLoading(true);
+		};
 	}, [props.match.params.id]);
 
 	const [shortDescriptionState, setShortDescriptionState] = useState(true);
@@ -239,36 +265,24 @@ const ContentPage = props => {
 	} else {
 		imdbRating = (
 			<RatingContainer>
-				<RatingProvider src={imdb} /> {contentData.imdbRating + '/10'}
+				<RatingProvider src={imdb} />
+				{contentData.imdbRating + '/10'}
 			</RatingContainer>
 		);
 	}
-
-	const renderSkeletons = (type, num) => {
-		let arr = [];
-		let skeletonType = null;
-		switch (type) {
-		case 'Genre':
-			skeletonType = <GenreSkeleton />;
-			break;
-		case 'Offer':
-			skeletonType = <OfferSkeleton />;
-			break;
-		case 'Para':
-			skeletonType = <ParagraphSkeleton />;
-			break;
-		default:
-			skeletonType = null;
-		}
-		for (let i = 0; i < num; i++) {
-			arr.push(skeletonType);
-		}
-		return arr;
+	//src="https://images.justwatch.com/poster/53235192/s166/Baaghi-2"
+	const constructPosterUrl = (query, title) => {
+		const TITLE_ARRAY = title.split(' ');
+		const QUERY_ARRAY = query.split('/');
+		const BASE_URL = 'https://images.justwatch.com';
+		const TYPE = QUERY_ARRAY[1];
+		const ID = QUERY_ARRAY[2];
+		const RES = 's166';
+		return `${BASE_URL}/${TYPE}/${ID}/${RES}/${title}`;
 	};
-	let genreSkeleton = renderSkeletons('Genre', 3);
-	let offerSekeleton = renderSkeletons('Offer', 3);
-	let paragraphSekeleton = renderSkeletons('Para', 6);
-	return (
+	return loading ? (
+		<Spinner />
+	) : (
 		<div>
 			<Bg bg={contentData.poster} />
 			<Gradient />
@@ -285,74 +299,82 @@ const ContentPage = props => {
 						share
 					</i>
 				</TopActions>
-				{loading ? <PosterSkeleton /> : <Poster src={contentData.poster} />}
-				{loading ? <HeadingSkeleton /> : <Heading>{contentData.title}</Heading>}
-				<Ratings>
-					{tomatoRating}
-					{imdbRating}
-				</Ratings>
-				<Tags>
-					{loading
-						? genreSkeleton
-						: contentData.genres.slice(0, 3).map(genre => {
-							return <Genre key={genre}>{genre}</Genre>;
-						  })}
-				</Tags>
-				<OfferContainer>
-					{loading ? null : <SubHeading>Stream It On</SubHeading>}
-					{loading ? (
-						<OfferSkeletonContainer>{offerSekeleton}</OfferSkeletonContainer>
-					) : (
-						<Offers offers={contentData.offers} />
-					)}
-				</OfferContainer>
-				<ListActions>
-					{loading ? (
-						<ListActionSkeleton />
-					) : (
-						<ListAction>
-							<i className="material-icons">add</i> Want To See
-						</ListAction>
-					)}
-					{loading ? (
-						<ListActionSkeleton />
-					) : (
-						<ListAction>
-							<i className="material-icons">done</i>Seen It
-						</ListAction>
-					)}
-				</ListActions>
-				<Description>
-					{loading ? (
-						<SubHeadingSkeleton />
-					) : (
-						<SubHeading>Description</SubHeading>
-					)}
-					{loading ? (
-						paragraphSekeleton
-					) : (
-						<p>
-							{shortDescriptionState ? description : contentData.description}
-						</p>
-					)}
-					{contentData.description.length > 140 ? (
-						<p onClick={() => setShortDescriptionState(!shortDescriptionState)}>
-							{shortDescriptionState ? 'more' : 'less'}
-						</p>
-					) : null}
-
-					{loading ? null : <Hr />}
-					<Stats>
-						<Stat>
-							<i className="material-icons">access_time</i>{' '}
-							{contentData.runtime}
-						</Stat>
-						<Stat>
-							<i className="material-icons">calendar_today</i>{' '}
-							{contentData.releaseYear}
-						</Stat>
-					</Stats>
-				</Description>
+				<Layout>
+					<PosterContainer>
+						<Poster src={contentData.poster} />
+					</PosterContainer>
+					<InfoContainer>
+						<Heading>{contentData.title}</Heading>
+						<Ratings>
+							{tomatoRating}
+							{imdbRating}
+						</Ratings>
+						<Tags>
+							{contentData.genres.slice(0, 3).map(genre => {
+								return <Genre key={genre}>{genre}</Genre>;
+							})}
+						</Tags>
+						<OfferContainer>
+							<SubHeading>Stream It On</SubHeading>
+							<Offers offers={contentData.offers} />
+						</OfferContainer>
+						<ListActions>
+							<ListAction>
+								<i className="material-icons">add</i> Want To See
+							</ListAction>
+							<ListAction>
+								<i className="material-icons">done</i>Seen It
+							</ListAction>
+						</ListActions>
+						<Description>
+							<SubHeading>Description</SubHeading>
+							{
+								<p>
+									{shortDescriptionState
+										? description
+										: contentData.description}
+								</p>
+							}
+							{contentData.description.length > 140 ? (
+								<p
+									onClick={() =>
+										setShortDescriptionState(!shortDescriptionState)
+									}
+								>
+									{shortDescriptionState ? 'more' : 'less'}
+								</p>
+							) : null}
+							<Hr />
+							<Stats>
+								<Stat>
+									<i className="material-icons">access_time</i>{' '}
+									{contentData.runtime}
+								</Stat>
+								<Stat>
+									<i className="material-icons">calendar_today</i>{' '}
+									{contentData.releaseYear}
+								</Stat>
+							</Stats>
+						</Description>
+					</InfoContainer>
+				</Layout>
+				<ScrollerContainer>
+					<SubHeading>Watch Similar to {contentData.title}</SubHeading>
+					<Scroller>
+						{reccomendations.map(r => {
+							let url;
+							if (r.poster) {
+								url = constructPosterUrl(r.poster, r.title);
+							}
+							return (
+								<Link to={`/content/${r.unique_id}`} key={r.unique_id}>
+									<ReccomendedPoster src={url} />
+									<Title>{r.title}</Title>
+								</Link>
+							);
+						})}
+					</Scroller>
+				</ScrollerContainer>
 			</ContentContainer>
 		</div>
 	);
