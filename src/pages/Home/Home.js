@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../../axios';
 import MovieSection from '../../components/MovieSection/MovieSection';
-
+import Slider from 'react-slick';
+import styled from 'styled-components';
+import Spinner from '../../components/Spinner/Spinner';
+const SliderContainer = styled.section`
+	width: 100%;
+`;
+const SliderPoster = styled.img`
+	width: 100%;
+`;
 const Home = () => {
 	const [loading, setLoading] = useState(true);
 	const [movieData, setMovieData] = useState({
@@ -10,10 +18,12 @@ const Home = () => {
 		comedy: [],
 		justArrived: []
 	});
+	const [carousel, setCarousel] = useState([]);
 
 	const fetchData = async () => {
 		let res = await axios.get('/home-page');
 		let data = res.data;
+		console.log(data);
 		if (data) {
 			setLoading(false);
 			setMovieData({
@@ -22,13 +32,41 @@ const Home = () => {
 				comedy: data.comedy,
 				justArrived: data.just_arrived
 			});
+			setCarousel(data.corousel);
 		}
 	};
 	useEffect(() => {
 		fetchData();
+		return () => {
+			setLoading(true);
+		};
 	}, []);
-	return (
+	let settings = {
+		dots: false,
+		infinite: true,
+		speed: 500,
+		slidesToShow: 1,
+		slidesToScroll: 1,
+		adaptiveHeight: true,
+		arrows: false,
+		autoplay: true,
+		autoplaySpeed: 10000
+	};
+	return loading ? (
+		<Spinner />
+	) : (
 		<div>
+			<SliderContainer>
+				<Slider {...settings}>
+					{carousel.map(c => {
+						return (
+							<div key={c.unique_id}>
+								<SliderPoster src={c.poster} />
+							</div>
+						);
+					})}
+				</Slider>
+			</SliderContainer>
 			<MovieSection movieData={movieData} />
 		</div>
 	);
