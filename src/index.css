@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Overpass:400,700");
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
 * {
   padding: 0;
   margin: 0;
