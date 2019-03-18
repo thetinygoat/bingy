@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Search from '../../pages/Search/Search';
+import { Link } from 'react-router-dom';
 const Navbar = styled.section`
 	background-color: #0a1016;
 	position: fixed;
@@ -39,7 +40,9 @@ export class MobileTopBar extends Component {
 			<div>
 				<Navbar>
 					<Container>
-						<h1>Bingy</h1>
+						<Link to="/" style={{ color: '#e2e2e2' }}>
+							<h1>Bingy</h1>
+						</Link>
 						<Actions>
 							<Action
 								onClick={() =>

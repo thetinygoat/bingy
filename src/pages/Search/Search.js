@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from '../../axios';
 import { Link } from 'react-router-dom';
@@ -71,10 +71,11 @@ const Title = styled.p`
 	font-weight: bold;
 `;
 const Search = props => {
+	let inputRef;
 	const [query, setQuery] = useState('');
 	const [data, setData] = useState([]);
 	const searchMovies = async () => {
-		let res = await axios.post('/movie-search', {
+		let res = await axios.post('/autocomplete', {
 			data: query
 		});
 		setData(res.data.movies);
@@ -83,6 +84,19 @@ const Search = props => {
 	const handleChange = e => {
 		setQuery(e.target.value);
 		searchMovies();
+	};
+	useEffect(() => {
+		inputRef.focus();
+	});
+	const constructPosterUrl = (query, title) => {
+		const TITLE_ARRAY = title.split(' ');
+		const QUERY_ARRAY = query.split('/');
+		const BASE_URL = 'https://images.justwatch.com';
+		const TYPE = QUERY_ARRAY[1];
+		const ID = QUERY_ARRAY[2];
+		const RES = 's166';
+		console.log(`${BASE_URL}/${TYPE}/${ID}/${RES}/${title}`);
+		return `${BASE_URL}/${TYPE}/${ID}/${RES}/${title}`;
 	};
 	return (
 		<Searchpage>
@@ -96,12 +110,17 @@ const Search = props => {
 							placeholder="search"
 							value={query}
 							onChange={handleChange}
+							ref={node => (inputRef = node)}
 						/>
 					</SearchBarStyler>
 				</SearchBarContainer>
 				<Grid>
 					{data &&
 						data.map(movie => {
+							let url;
+							if (movie.poster) {
+								url = constructPosterUrl(movie.poster, movie.title);
+							}
 							return (
 								<Link
 									key={movie.unique_id}
@@ -109,7 +128,7 @@ const Search = props => {
 									onClick={props.closeSearch}
 								>
 									<Items>
-										<Poster src={movie.poster} />
+										<Poster src={url} />
 										<Title>
 											{movie.title.substring(0, 10) + '...'}(
 											{movie.original_release_year})
