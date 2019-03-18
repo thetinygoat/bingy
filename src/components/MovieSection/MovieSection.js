@@ -12,6 +12,7 @@ const SubHeading = styled.h1`
 `;
 const Container = styled.section`
 	padding: 0.5em;
+	margin-bottom: 1em;
 `;
 const MovieSection = props => {
 	let data = Object.keys(props.movieData).map(key => {
