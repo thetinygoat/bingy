@@ -8,6 +8,9 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import Search from './pages/Search/Search';
 class App extends Component {
+	state = {
+		loggedIn: false
+	};
 	componentDidMount() {
 		window.addEventListener('load', () => {
 			if (window.innerWidth > 730) {
@@ -43,7 +46,8 @@ class App extends Component {
 
 const mapStateToProps = state => {
 	return {
-		view: state.screenView
+		view: state.screenView,
+		auth: state.auth
 	};
 };
 const mapDispatchToProps = dispatch => {

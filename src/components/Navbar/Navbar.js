@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Search from '../../pages/Search/Search';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import FacebookLogin from 'react-facebook-login';
+import { setLogin, logout, initLogIn } from '../../store/actions/actions';
 const Navbar = styled.section`
 	background-color: #0a1016;
 	position: fixed;
@@ -10,6 +13,7 @@ const Navbar = styled.section`
 	padding: 1em;
 	box-sizing: border-box;
 	box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
+	z-index: 999;
 `;
 const Container = styled.div`
 	width: 85%;
@@ -28,6 +32,22 @@ export class MobileTopBar extends Component {
 	state = {
 		isSearchOpen: false
 	};
+	componentDidMount() {
+		console.log('navbar mounted');
+		let authToken = localStorage.getItem('authToken');
+		let userId = localStorage.getItem('userId');
+		let imageUrl = localStorage.getItem('imageUrl');
+		let userName = localStorage.getItem('userName');
+		const payload = {
+			authToken,
+			userId,
+			imageUrl,
+			userName
+		};
+		if (userName && userId && imageUrl && authToken) {
+			this.props.handleLogIn(payload);
+		}
+	}
 	handleSearchPageClose = () => {
 		this.setState(state => {
 			return {
@@ -35,7 +55,19 @@ export class MobileTopBar extends Component {
 			};
 		});
 	};
+	handleFbClick = () => {
+		console.log('clicked');
+	};
+	handleResponse = response => {
+		console.log(response);
+		this.props.initLogIn(response);
+	};
 	render() {
+		let userDetails = (
+			<div>
+				<p>{this.props.auth.userName}</p>
+			</div>
+		);
 		return (
 			<div>
 				<Navbar>
@@ -59,6 +91,18 @@ export class MobileTopBar extends Component {
 								<i className="material-icons">settings</i>
 							</Action>
 						</Actions>
+						{!this.props.auth.isLoggedIn ? (
+							<FacebookLogin
+								appId="1195825920574651"
+								fields="name, email, picture"
+								scope="public_profile,user_friends"
+								onClick={this.props.handleLogIn}
+								callback={this.handleResponse}
+								// disableMobileRedirect={true}
+							/>
+						) : (
+							userDetails
+						)}
 					</Container>
 				</Navbar>
 				{this.state.isSearchOpen && (
@@ -68,5 +112,20 @@ export class MobileTopBar extends Component {
 		);
 	}
 }
-
-export default MobileTopBar;
+const mapStateToProps = state => {
+	return {
+		view: state.screenView,
+		auth: state.auth
+	};
+};
+const mapDispatchToProps = dispatch => {
+	return {
+		initLogIn: payload => dispatch(initLogIn({ payload: payload })),
+		handleLogIn: payload => dispatch(setLogin({ payload: payload })),
+		handleLogout: () => dispatch(logout())
+	};
+};
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(MobileTopBar);

@@ -4,11 +4,13 @@ import MovieSection from '../../components/MovieSection/MovieSection';
 import Slider from 'react-slick';
 import styled from 'styled-components';
 import Spinner from '../../components/Spinner/Spinner';
+
 const SliderContainer = styled.section`
 	width: 100%;
 `;
 const SliderPoster = styled.img`
 	width: 100%;
+	// height: 80vh;
 `;
 const Home = () => {
 	const [loading, setLoading] = useState(true);
@@ -52,6 +54,7 @@ const Home = () => {
 		autoplay: true,
 		autoplaySpeed: 10000
 	};
+
 	return loading ? (
 		<Spinner />
 	) : (

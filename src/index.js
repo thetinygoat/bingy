@@ -8,9 +8,11 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
 import screenViewReducer from './store/reducers/appview';
+import authReducer from './store/reducers/auth';
 
 const rootReducer = combineReducers({
-	screenView: screenViewReducer
+	screenView: screenViewReducer,
+	auth: authReducer
 });
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
