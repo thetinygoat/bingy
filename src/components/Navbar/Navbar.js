@@ -3,8 +3,14 @@ import styled from 'styled-components';
 import Search from '../../pages/Search/Search';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import FacebookLogin from 'react-facebook-login';
-import { setLogin, logout, initLogIn } from '../../store/actions/actions';
+import { provider, auth } from '../../client';
+import {
+	loginInit,
+	loginMiddleware,
+	loginSuccess,
+	loginFail,
+	logout
+} from '../../store/actions/actions';
 const Navbar = styled.section`
 	background-color: #0a1016;
 	position: fixed;
@@ -24,6 +30,7 @@ const Container = styled.div`
 `;
 const Actions = styled.div`
 	display: flex;
+	align-items: center;
 `;
 const Action = styled.div`
 	margin-right: ${props => (props.last ? '0px' : '20px')};
@@ -33,19 +40,28 @@ export class MobileTopBar extends Component {
 		isSearchOpen: false
 	};
 	componentDidMount() {
-		console.log('navbar mounted');
-		let authToken = localStorage.getItem('authToken');
-		let userId = localStorage.getItem('userId');
-		let imageUrl = localStorage.getItem('imageUrl');
-		let userName = localStorage.getItem('userName');
-		const payload = {
+		this.props.loginInit();
+		let userName, email, imageUrl, authToken, userId, accessToken;
+		userName = localStorage.getItem('userName');
+		email = localStorage.getItem('email');
+		imageUrl = localStorage.getItem('imageUrl');
+		authToken = localStorage.getItem('authToken');
+		userId = localStorage.getItem('userId');
+		accessToken = localStorage.getItem('accessToken');
+		const finalPayload = {
+			userName,
+			email,
+			imageUrl,
 			authToken,
 			userId,
-			imageUrl,
-			userName
+			accessToken
 		};
-		if (userName && userId && imageUrl && authToken) {
-			this.props.handleLogIn(payload);
+		// console.log(userId, userName, email, imageUrl, authToken);
+		if (userName && userId && authToken && imageUrl) {
+			this.props.loginSuccess(finalPayload);
+		} else {
+			this.props.loginFail();
+			this.props.logout();
 		}
 	}
 	handleSearchPageClose = () => {
@@ -55,17 +71,51 @@ export class MobileTopBar extends Component {
 			};
 		});
 	};
-	handleFbClick = () => {
-		console.log('clicked');
+	handlelogout = async () => {
+		localStorage.clear();
+		await auth().signOut();
+		this.props.logout();
 	};
-	handleResponse = response => {
-		console.log(response);
-		this.props.initLogIn(response);
+	handlelogin = async () => {
+		this.props.loginInit();
+		let userName, phone, email, photoUrl, accessToken, userId;
+		try {
+			let response = await auth().signInWithPopup(provider);
+			if (response.user) {
+				console.log(response);
+				let data = response.user;
+				accessToken = response.credential.accessToken;
+				userName = data.displayName;
+				phone = data.phoneNumber;
+				email = data.email;
+				photoUrl = data.photoURL;
+				userId = response.additionalUserInfo.profile.id;
+				const payload = {
+					userName,
+					imageUrl: photoUrl,
+					phone: phone,
+					email,
+					accessToken,
+					userId
+				};
+				this.props.loginMiddleware(payload);
+			}
+		} catch (err) {
+			this.props.loginFail();
+			alert(err);
+		}
 	};
 	render() {
 		let userDetails = (
 			<div>
-				<p>{this.props.auth.userName}</p>
+				<Actions>
+					<Action>
+						<p>{this.props.auth.userName}</p>
+					</Action>
+					<Action>
+						<button onClick={this.handlelogout}>logout</button>
+					</Action>
+				</Actions>
 			</div>
 		);
 		return (
@@ -76,6 +126,19 @@ export class MobileTopBar extends Component {
 							<h1>Bingy</h1>
 						</Link>
 						<Actions>
+							{this.props.view.isMobile ? null : (
+								<React.Fragment>
+									<Action>
+										<Link to="/">Home</Link>
+									</Action>
+									<Action>
+										<Link to="/">Movies</Link>
+									</Action>
+									<Action>
+										<Link to="/">TV Series</Link>
+									</Action>
+								</React.Fragment>
+							)}
 							<Action
 								onClick={() =>
 									this.setState(state => {
@@ -84,25 +147,20 @@ export class MobileTopBar extends Component {
 										};
 									})
 								}
+								style={{ cursor: 'pointer' }}
 							>
 								<i className="material-icons">search</i>
 							</Action>
-							<Action last>
-								<i className="material-icons">settings</i>
-							</Action>
+							{this.props.auth.isLoggedIn ? (
+								userDetails
+							) : (
+								<React.Fragment>
+									<Action>
+										<button onClick={this.handlelogin}>login</button>
+									</Action>
+								</React.Fragment>
+							)}
 						</Actions>
-						{!this.props.auth.isLoggedIn ? (
-							<FacebookLogin
-								appId="1195825920574651"
-								fields="name, email, picture"
-								scope="public_profile,user_friends"
-								onClick={this.props.handleLogIn}
-								callback={this.handleResponse}
-								// disableMobileRedirect={true}
-							/>
-						) : (
-							userDetails
-						)}
 					</Container>
 				</Navbar>
 				{this.state.isSearchOpen && (
@@ -120,9 +178,11 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
 	return {
-		initLogIn: payload => dispatch(initLogIn({ payload: payload })),
-		handleLogIn: payload => dispatch(setLogin({ payload: payload })),
-		handleLogout: () => dispatch(logout())
+		loginInit: () => dispatch(loginInit()),
+		loginMiddleware: payload => dispatch(loginMiddleware({ payload })),
+		loginSuccess: payload => dispatch(loginSuccess({ ...payload })),
+		loginFail: () => dispatch(loginFail()),
+		logout: () => dispatch(logout())
 	};
 };
 export default connect(
