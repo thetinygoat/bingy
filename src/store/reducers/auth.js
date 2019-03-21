@@ -1,27 +1,53 @@
-import { LOGOUT, SET_LOGIN } from '../actions/actions';
+import {
+	LOGIN_INIT,
+	LOGIN_SUCCESS,
+	LOGIN_FAIL,
+	LOGOUT
+} from '../actions/actions';
 const initialState = {
 	userName: '',
+	email: '',
 	userId: '',
 	authToken: '',
 	imageUrl: '',
-	isLoggedIn: false
+	phone: '',
+	accessToken: '',
+	isLoggedIn: false,
+	loginSuccess: false,
+	loginFail: false,
+	loginInit: false
 };
 
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
-	case SET_LOGIN: {
+	case LOGIN_INIT: {
 		return {
 			...initialState,
+			loginInit: true
+		};
+	}
+	case LOGIN_SUCCESS: {
+		return {
+			...state,
 			...action.payload,
-			isLoggedIn: true
+			isLoggedIn: true,
+			loginSuccess: true
+		};
+	}
+	case LOGIN_FAIL: {
+		return {
+			...state,
+			isLoggedIn: false,
+			loginFail: true
 		};
 	}
 	case LOGOUT: {
 		return {
-			...initialState,
+			...state,
 			isLoggedIn: false
 		};
 	}
+	// case
 	default:
 		return state;
 	}

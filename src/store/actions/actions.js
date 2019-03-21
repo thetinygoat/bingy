@@ -1,9 +1,10 @@
 import axios from '../../axios';
 export const MOBILE_VIEW = 'MOBILE_VIEW';
 export const DESKTOP_VIEW = 'DESKTOP_VIEW';
-export const SET_LOGIN = 'SET_LOGIN';
+export const LOGIN_INIT = 'LOGIN_INIT';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT = 'LOGOUT';
-export const INIT_LOGIN = 'INIT_LOGIN';
 
 export const mobileView = () => {
 	return {
@@ -17,69 +18,38 @@ export const desktopView = () => {
 	};
 };
 
-export const setLogin = payload => {
-	// let data = payload.payload;
-	// let userName, userId, imageUrl, authToken;
-	// userName = data.name;
-	// userId = data.userID;
-	// authToken = jwt;
-	// if (data.picture) {
-	// 	imageUrl = data.picture.data.url;
-	// }
-	// const userData = {
-	// 	userName,
-	// 	userId,
-	// 	imageUrl,
-	// 	authToken
-	// };
-	let data = payload.payload;
-	const userData = {
-		userName: data.userName,
-		userId: data.userId,
-		imageUrl: data.imageUrl,
-		authToken: data.authToken
-	};
+export const loginInit = () => {
 	return {
-		type: SET_LOGIN,
-		payload: userData
+		type: LOGIN_INIT
 	};
 };
 
-export const initLogIn = payload => {
-	let data = payload.payload;
-	let name, facebookUserID, image_url;
-	name = data.name;
-	facebookUserID = data.userID;
-	if (data.picture) {
-		image_url = data.picture.data.url;
-	}
-	const userData = {
-		name,
-		facebookUserID,
-		image_url
-	};
-
+export const loginMiddleware = payload => {
 	return async dispatch => {
-		let resp = await axios.post('/fb-auth', userData);
-		let data = payload.payload;
-		let userName, userId, imageUrl, authToken;
-		userName = data.name;
-		userId = data.userID;
-		authToken = resp.data;
-		if (data.picture) {
-			imageUrl = data.picture.data.url;
+		let response = await axios.post('/fb-auth', payload.payload);
+		if (response) {
+			localStorage.setItem('userName', payload.payload.userName);
+			localStorage.setItem('imageUrl', payload.payload.imageUrl);
+			localStorage.setItem('email', payload.payload.email);
+			localStorage.setItem('userId', payload.payload.userId);
+			localStorage.setItem('authToken', response.data);
+			let finalPayload = { ...payload.payload, authToken: response.data };
+			dispatch(loginSuccess(finalPayload));
 		}
-		localStorage.setItem('authToken', authToken);
-		localStorage.setItem('userName', userName);
-		localStorage.setItem('imageUrl', imageUrl);
-		localStorage.setItem('userId', userId);
-		const usrData = {
-			userName,
-			userId,
-			imageUrl,
-			authToken
-		};
-		dispatch(setLogin(usrData));
+	};
+};
+
+export const loginSuccess = payload => {
+	console.log(payload);
+	return {
+		type: LOGIN_SUCCESS,
+		payload: payload
+	};
+};
+
+export const loginFail = () => {
+	return {
+		type: LOGIN_FAIL
 	};
 };
 
