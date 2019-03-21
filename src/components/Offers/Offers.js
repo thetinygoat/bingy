@@ -27,8 +27,11 @@ const Offer = styled.img`
 
 const OfferContainer = styled.div`
 	display: flex;
-	overflow-x: auto;
+	flex-wrap: wrap;
 	justify-content: center;
+	width: 100%;
+	margin: auto;
+	box-sizing: border-box;
 `;
 
 export default function Offers(props) {
