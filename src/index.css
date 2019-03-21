@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Overpass:400,700");
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,700");
 @import "~slick-carousel/slick/slick.css";
 @import "~slick-carousel/slick/slick-theme.css";
 * {
@@ -8,7 +8,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Overpass", sans-serif;
+  font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #0a1016;
@@ -16,12 +16,17 @@ body {
   margin-top: 4.5em;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  overflow-x: hidden;
 }
 body ::-webkit-scrollbar {
   display: none;
 }
 a {
   text-decoration: none;
+  color: #e2e2e2;
+}
+a:active {
+  background: none;
 }
 
 code {
