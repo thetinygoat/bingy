@@ -103,7 +103,10 @@ const Search = props => {
 			<Container>
 				<SearchBarContainer>
 					<SearchBarStyler>
-						<BackButton onClick={props.closeSearch}>
+						<BackButton
+							onClick={props.closeSearch}
+							style={{ cursor: 'pointer' }}
+						>
 							<i className="material-icons">arrow_back</i>
 						</BackButton>
 						<Searchbar
