@@ -11,6 +11,10 @@ const SliderContainer = styled.section`
 const SliderPoster = styled.img`
 	width: 100%;
 	// height: 80vh;
+	border-radius: 10px;
+	@media (max-width: 730px) {
+		transform: scale(0.9);
+	}
 `;
 const Home = () => {
 	const [loading, setLoading] = useState(true);
