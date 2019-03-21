@@ -40,7 +40,7 @@ const ContentContainer = styled.section`
 	}
 `;
 const Poster = styled.img`
-	border-radius: 10px;
+	border-radius: 4px;
 `;
 const Heading = styled.h1`
 	font-size: 2em;
@@ -84,7 +84,7 @@ const Genre = styled.div`
 	font-weight: bold;
 	text-align: center;
 	padding: 0.6em;
-	margin-right: 0.3em;
+	margin: 0.3em;
 `;
 const OfferContainer = styled.section`
 	display: flex;
@@ -170,24 +170,27 @@ const ScrollerContainer = styled.section`
 	width: 90%;
 	flex-direction: column;
 	text-align: left !important;
+	margin-top: 1em;
+	@media (max-width: 730px) {
+		width: 107%;
+	}
 `;
 const ReccomendedPoster = styled.img`
-	width: 130px;
-	margin-right: 0.4em;
-	border-radius: 10px;
+	margin-right: 1.2em;
+	border-radius: 4px;
+	width: 150px;
 	@media (max-width: 730px) {
 		width: 120px;
 	}
 `;
 const Title = styled.p`
-	text-decoration: none;
-	color: #e2e2e2;
-	font-size: .8em;
-	margin-top: .2em
-	font-weight: bold;
-	display: flex
-	flex-wrap:wrap
-	width: 90%
+text-decoration: none;
+color: #606263;
+font-size: .8em;
+margin-top: .2em
+display: flex
+flex-wrap:wrap
+width: 90%
 `;
 const ContentPage = props => {
 	const [contentData, setContentData] = useState({
