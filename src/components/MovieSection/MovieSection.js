@@ -8,11 +8,13 @@ const MovieSectionContainer = styled.section`
 `;
 const SubHeading = styled.h1`
 	font-size: 1.3em;
-	margin-bottom: 0.5em;
+	margin-bottom: 1em;
 `;
 const Container = styled.section`
-	padding: 0.5em;
-	margin-bottom: 1em;
+	margin: 2em 0 3em 3em;
+	@media (max-width: 730px) {
+		margin: 1em 0 1em 1em;
+	}
 `;
 const MovieSection = props => {
 	let data = Object.keys(props.movieData).map(key => {
