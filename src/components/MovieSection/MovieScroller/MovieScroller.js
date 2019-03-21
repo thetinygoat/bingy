@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const Poster = styled.img`
-	margin-right: 10px;
-	border-radius: 10px;
+	margin-right: 1.2em;
+	border-radius: 4px;
+	width: 150px;
 	@media (max-width: 730px) {
 		width: 120px;
 	}
@@ -14,10 +15,9 @@ const Scroller = styled.section`
 `;
 const Title = styled.p`
 	text-decoration: none;
-	color: #e2e2e2;
+	color: #606263;
 	font-size: .8em;
 	margin-top: .2em
-	font-weight: bold;
 	display: flex
 	flex-wrap:wrap
 	width: 90%
