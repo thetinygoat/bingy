@@ -42,6 +42,7 @@ const ContentContainer = styled.section`
 `;
 const Poster = styled.img`
 	border-radius: 4px;
+	box-shadow: inset 0 0 10px #000000;
 `;
 const Heading = styled.h1`
 	font-size: 2em;
@@ -55,7 +56,8 @@ const TopActions = styled.section`
 	display: flex;
 	justify-content: space-between;
 	width: 100%;
-	padding: 1em;
+	box-sizing: border-box;
+	padding: 2em 1em;
 `;
 const Ratings = styled.section`
 	display: flex;
@@ -186,7 +188,7 @@ const ReccomendedPoster = styled.img`
 `;
 const Title = styled.p`
 text-decoration: none;
-color: #606263;
+color: #a4a6a7;
 font-size: .8em;
 margin-top: .2em
 display: flex
@@ -275,9 +277,7 @@ const ContentPage = props => {
 			</RatingContainer>
 		);
 	}
-	//src="https://images.justwatch.com/poster/53235192/s166/Baaghi-2"
 	const constructPosterUrl = (query, title) => {
-		const TITLE_ARRAY = title.split(' ');
 		const QUERY_ARRAY = query.split('/');
 		const BASE_URL = 'https://images.justwatch.com';
 		const TYPE = QUERY_ARRAY[1];
@@ -306,7 +306,7 @@ const ContentPage = props => {
 				</TopActions>
 				<Layout>
 					<PosterContainer>
-						<Poster src={contentData.poster} />
+						<Poster src={contentData.poster} height="236px" />
 					</PosterContainer>
 					<InfoContainer>
 						<Heading>{contentData.title}</Heading>
