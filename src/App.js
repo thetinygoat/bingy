@@ -7,6 +7,7 @@ import BottomBar from './components/BottomBar/BottomBar';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import Search from './pages/Search/Search';
+import ReactGA from 'react-ga';
 class App extends Component {
 	state = {
 		loggedIn: false
@@ -28,6 +29,10 @@ class App extends Component {
 		});
 	}
 	render() {
+		ReactGA.initialize('UA-136781842-1', {
+			debug: true
+		});
+		ReactGA.pageview(window.location.pathname + window.location.search);
 		return (
 			<BrowserRouter>
 				<div>
