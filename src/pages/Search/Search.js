@@ -14,8 +14,12 @@ const Searchpage = styled.section`
 	z-index: 99999;
 `;
 const Poster = styled.img`
-	width: 120px;
-	border-radius: 10px;
+	margin-right: 1.2em;
+	border-radius: 4px;
+	width: 150px;
+	@media (max-width: 730px) {
+		width: 120px;
+	}
 `;
 const Container = styled.div`
 	width: 95%;
@@ -66,12 +70,29 @@ const BackButton = styled.div`
 `;
 const Title = styled.p`
 	text-decoration: none;
-	color: #e5e5e5;
-	font-size: .8em;
-	margin-top: .2em
-	font-weight: bold;
+	color: #a4a6a7;
+	font-size: 0.8em;
+	margin-top: 0.2em;
+	width: 9em;
 `;
-
+const Holder = styled.div`
+	margin-right: 1.2em;
+	border-radius: 4px;
+	height: 213px;
+	min-width: 150px;
+	max-width: 150px;
+	display: flex;
+	text-align: center;
+	background-color: #284058;
+	justify-content: center;
+	align-items: center;
+	@media (max-width: 730px) {
+		min-width: 120px;
+		max-width: 120px;
+		height: 170px;
+	}
+	color: grey;
+`;
 class Search extends Component {
 	state = {
 		query: '',
@@ -145,10 +166,15 @@ class Search extends Component {
 										onClick={this.props.closeSearch}
 									>
 										<Items>
-											<Poster src={url} />
+											{movie.poster ? (
+												<Poster src={url} />
+											) : (
+												<Holder>
+													{movie.title}({movie.original_release_year})
+												</Holder>
+											)}
 											<Title>
-												{movie.title.substring(0, 10) + '...'}(
-												{movie.original_release_year})
+												{movie.title}({movie.original_release_year})
 											</Title>
 										</Items>
 									</Link>

@@ -25,7 +25,6 @@ const Home = () => {
 		justArrived: []
 	});
 	const [carousel, setCarousel] = useState([]);
-
 	const fetchData = async () => {
 		let res = await axios.get('/home-page');
 		let data = res.data;
@@ -57,21 +56,19 @@ const Home = () => {
 		autoplay: true,
 		autoplaySpeed: 10000
 	};
-
+	let carouselContent = carousel.map(c => {
+		return (
+			<div key={c.unique_id}>
+				<SliderPoster src={c.poster} />
+			</div>
+		);
+	});
 	return loading ? (
 		<Spinner />
 	) : (
 		<div>
 			<SliderContainer>
-				<Slider {...settings}>
-					{carousel.map(c => {
-						return (
-							<div key={c.unique_id}>
-								<SliderPoster src={c.poster} />
-							</div>
-						);
-					})}
-				</Slider>
+				<Slider {...settings}>{carouselContent}</Slider>
 			</SliderContainer>
 			<MovieSection movieData={movieData} />
 		</div>

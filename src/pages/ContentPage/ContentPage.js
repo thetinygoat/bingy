@@ -195,6 +195,24 @@ display: flex
 flex-wrap:wrap
 width: 90%
 `;
+const Holder = styled.div`
+	// margin-right: 1.2em;
+	border-radius: 4px;
+	height: 213px;
+	min-width: 150px;
+	max-width: 150px;
+	display: flex;
+	text-align: center;
+	background-color: #284058;
+	justify-content: center;
+	align-items: center;
+	// @media (max-width: 730px) {
+	// 	min-width: 120px;
+	// 	max-width: 120px;
+	// 	height: 170px;
+	// }
+	color: grey;
+`;
 const ContentPage = props => {
 	const [contentData, setContentData] = useState({
 		genres: [],
@@ -306,7 +324,17 @@ const ContentPage = props => {
 				</TopActions>
 				<Layout>
 					<PosterContainer>
-						<Poster src={contentData.poster} height="236px" />
+						{contentData.poster ? (
+							<Poster
+								src={contentData.poster}
+								alt={contentData.title}
+								key={contentData.poster}
+							/>
+						) : (
+							<Holder>
+								{contentData.title} ({contentData.releaseYear})
+							</Holder>
+						)}
 					</PosterContainer>
 					<InfoContainer>
 						<Heading>{contentData.title}</Heading>
@@ -373,7 +401,14 @@ const ContentPage = props => {
 							}
 							return (
 								<Link to={`/content/${r.unique_id}`} key={r.unique_id}>
-									<ReccomendedPoster src={url} />
+									{r.poster ? (
+										<ReccomendedPoster src={url} />
+									) : (
+										<Holder style={{ marginRight: '1.2em', height: '87%' }}>
+											{r.title} ({r.original_release_year})
+										</Holder>
+									)}
+
 									<Title>{r.title}</Title>
 								</Link>
 							);
