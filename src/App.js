@@ -7,6 +7,8 @@ import BottomBar from './components/BottomBar/BottomBar';
 import { BrowserRouter, Switch, Route, withRouter } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import Search from './pages/Search/Search';
+import Profile from './pages/Profile/Profile';
+import MobileLogin from './pages/MobileLogin/MobileLogin';
 import ReactGA from 'react-ga';
 ReactGA.initialize('UA-136783569-1', {
 	debug: true
@@ -42,6 +44,8 @@ class App extends Component {
 					<Switch>
 						<Route path="/" exact component={Home} />
 						<Route path="/search" component={Search} />
+						<Route path="/profile/:id" component={Profile} />
+						<Route path="/mobile/login" component={MobileLogin} />
 						<Route path="/content/:id" component={ContentPage} />
 					</Switch>
 					{this.props.view.isMobile && <BottomBar />}
