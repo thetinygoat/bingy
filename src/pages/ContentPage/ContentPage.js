@@ -6,6 +6,8 @@ import rotten from './rotten.png';
 import imdb from './imdb.png';
 import { Link } from 'react-router-dom';
 import Spinner from '../../components/Spinner/Spinner';
+import { Heading, SubHeading, Title } from '../../components/Typography';
+import { FixedHolder, DynamicHolder } from '../../components/Holder';
 import ReactGA from 'react-ga';
 const Bg = styled.div`
 	height: 100vh;
@@ -43,14 +45,6 @@ const ContentContainer = styled.section`
 const Poster = styled.img`
 	border-radius: 4px;
 	box-shadow: inset 0 0 10px #000000;
-`;
-const Heading = styled.h1`
-	font-size: 2em;
-	text-align: center;
-`;
-const SubHeading = styled.h1`
-	font-size: 1.3em;
-	margin-bottom: 0.5em;
 `;
 const TopActions = styled.section`
 	display: flex;
@@ -186,34 +180,25 @@ const ReccomendedPoster = styled.img`
 		width: 120px;
 	}
 `;
-const Title = styled.p`
-text-decoration: none;
-color: #a4a6a7;
-font-size: .8em;
-margin-top: .2em
-display: flex
-flex-wrap:wrap
-width: 90%
-`;
-const Holder = styled.div`
-	// margin-right: 1.2em;
-	border-radius: 4px;
-	height: 213px;
-	min-width: 150px;
-	max-width: 150px;
-	display: flex;
-	text-align: center;
-	background-color: #284058;
-	justify-content: center;
-	align-items: center;
-	font-size: 0.8em;
-	// @media (max-width: 730px) {
-	// 	min-width: 120px;
-	// 	max-width: 120px;
-	// 	height: 170px;
-	// }
-	color: grey;
-`;
+// const Holder = styled.div`
+// 	// margin-right: 1.2em;
+// 	border-radius: 4px;
+// 	height: 213px;
+// 	min-width: 150px;
+// 	max-width: 150px;
+// 	display: flex;
+// 	text-align: center;
+// 	background-color: #284058;
+// 	justify-content: center;
+// 	align-items: center;
+// 	font-size: 0.8em;
+// 	// @media (max-width: 730px) {
+// 	// 	min-width: 120px;
+// 	// 	max-width: 120px;
+// 	// 	height: 170px;
+// 	// }
+// 	color: grey;
+// `;
 const ContentPage = props => {
 	const [contentData, setContentData] = useState({
 		genres: [],
@@ -332,9 +317,9 @@ const ContentPage = props => {
 								key={contentData.poster}
 							/>
 						) : (
-							<Holder>
+							<FixedHolder>
 								{contentData.title} ({contentData.releaseYear})
-							</Holder>
+							</FixedHolder>
 						)}
 					</PosterContainer>
 					<InfoContainer>
@@ -405,9 +390,9 @@ const ContentPage = props => {
 									{r.poster ? (
 										<ReccomendedPoster src={url} />
 									) : (
-										<Holder style={{ marginRight: '1.2em', height: '87%' }}>
+										<DynamicHolder>
 											{r.title} ({r.original_release_year})
-										</Holder>
+										</DynamicHolder>
 									)}
 
 									<Title>{r.title}</Title>

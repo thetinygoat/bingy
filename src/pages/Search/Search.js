@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import axios from '../../axios';
 import { Link } from 'react-router-dom';
 import { DebounceInput } from 'react-debounce-input';
+import { FixedHolder } from '../../components/Holder';
 const Searchpage = styled.section`
 	position: fixed;
 	height: 100vh;
@@ -75,25 +76,7 @@ const Title = styled.p`
 	margin-top: 0.2em;
 	width: 9em;
 `;
-const Holder = styled.div`
-	margin-right: 1.2em;
-	border-radius: 4px;
-	height: 213px;
-	min-width: 150px;
-	max-width: 150px;
-	display: flex;
-	font-size: 0.8em;
-	text-align: center;
-	background-color: #284058;
-	justify-content: center;
-	align-items: center;
-	@media (max-width: 730px) {
-		min-width: 120px;
-		max-width: 120px;
-		height: 170px;
-	}
-	color: grey;
-`;
+
 class Search extends Component {
 	state = {
 		query: '',
@@ -170,9 +153,9 @@ class Search extends Component {
 											{movie.poster ? (
 												<Poster src={url} />
 											) : (
-												<Holder>
+												<FixedHolder search>
 													{movie.title}({movie.original_release_year})
-												</Holder>
+												</FixedHolder>
 											)}
 											<Title>
 												{movie.title}({movie.original_release_year})
