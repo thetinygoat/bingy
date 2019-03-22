@@ -15,7 +15,7 @@ const Scroller = styled.section`
 `;
 const Title = styled.p`
 	text-decoration: none;
-	color: #606263;
+	color: #a4a6a7;
 	font-size: .8em;
 	margin-top: .2em
 	display: flex
