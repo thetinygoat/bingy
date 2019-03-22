@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from '../../axios';
 import { Link } from 'react-router-dom';
+import { DebounceInput } from 'react-debounce-input';
 const Searchpage = styled.section`
 	position: fixed;
 	height: 100vh;
@@ -51,15 +52,15 @@ const SearchBarStyler = styled.div`
 	width: 90%;
 	border-radius: 10px;
 `;
-const Searchbar = styled.input`
-	background: transparent;
-	outline: none;
-	border: none;
-	padding: 1em;
-	width: 100%;
-	color: #e5e5e5;
-	font-size: 1em;
-`;
+// const Searchbar = styled.input`
+// 	background: transparent;
+// 	outline: none;
+// 	border: none;
+// 	padding: 1em;
+// 	width: 100%;
+// 	color: #e5e5e5;
+// 	font-size: 1em;
+// `;
 const BackButton = styled.div`
 	padding: 10px;
 `;
@@ -70,80 +71,93 @@ const Title = styled.p`
 	margin-top: .2em
 	font-weight: bold;
 `;
-const Search = props => {
-	let inputRef;
-	const [query, setQuery] = useState('');
-	const [data, setData] = useState([]);
-	const searchMovies = async () => {
+
+class Search extends Component {
+	state = {
+		query: '',
+		data: []
+	};
+	searchMovies = async () => {
 		let res = await axios.post('/autocomplete', {
-			data: query
+			data: this.state.query
 		});
-		setData(res.data.movies);
-		console.log(res.data);
+		this.setState({ data: res.data.movies });
 	};
-	const handleChange = e => {
-		setQuery(e.target.value);
-		searchMovies();
+	handleChange = async e => {
+		this.setState({ query: e.target.value });
+		this.searchMovies();
 	};
-	useEffect(() => {
-		inputRef.focus();
-	});
-	const constructPosterUrl = (query, title) => {
-		const TITLE_ARRAY = title.split(' ');
+	constructPosterUrl = (query, title) => {
 		const QUERY_ARRAY = query.split('/');
 		const BASE_URL = 'https://images.justwatch.com';
 		const TYPE = QUERY_ARRAY[1];
 		const ID = QUERY_ARRAY[2];
 		const RES = 's166';
-		console.log(`${BASE_URL}/${TYPE}/${ID}/${RES}/${title}`);
 		return `${BASE_URL}/${TYPE}/${ID}/${RES}/${title}`;
 	};
-	return (
-		<Searchpage>
-			<Container>
-				<SearchBarContainer>
-					<SearchBarStyler>
-						<BackButton
-							onClick={props.closeSearch}
-							style={{ cursor: 'pointer' }}
-						>
-							<i className="material-icons">arrow_back</i>
-						</BackButton>
-						<Searchbar
-							placeholder="search"
-							value={query}
-							onChange={handleChange}
-							ref={node => (inputRef = node)}
-						/>
-					</SearchBarStyler>
-				</SearchBarContainer>
-				<Grid>
-					{data &&
-						data.map(movie => {
-							let url;
-							if (movie.poster) {
-								url = constructPosterUrl(movie.poster, movie.title);
-							}
-							return (
-								<Link
-									key={movie.unique_id}
-									to={`/content/${movie.unique_id}`}
-									onClick={props.closeSearch}
-								>
-									<Items>
-										<Poster src={url} />
-										<Title>
-											{movie.title.substring(0, 10) + '...'}(
-											{movie.original_release_year})
-										</Title>
-									</Items>
-								</Link>
-							);
-						})}
-				</Grid>
-			</Container>
-		</Searchpage>
-	);
-};
-
+	render() {
+		return (
+			<Searchpage>
+				<Container>
+					<SearchBarContainer>
+						<SearchBarStyler>
+							<BackButton
+								onClick={this.props.closeSearch}
+								style={{ cursor: 'pointer' }}
+							>
+								<i className="material-icons">arrow_back</i>
+							</BackButton>
+							{/* <Searchbar
+								placeholder="search"
+								// value={query}
+								// onChange={handleChange}
+								ref={node => (inputRef = node)}
+							/> */}
+							<DebounceInput
+								debounceTimeout={500}
+								onChange={this.handleChange}
+								type="text"
+								placeholder="Search"
+								value={this.state.query}
+								style={{
+									background: 'transparent',
+									outline: 'none',
+									border: 'none',
+									padding: '1em',
+									width: '100%',
+									color: '#e5e5e5',
+									fontSize: '1em'
+								}}
+							/>
+						</SearchBarStyler>
+					</SearchBarContainer>
+					<Grid>
+						{this.state.data &&
+							this.state.data.map(movie => {
+								let url;
+								if (movie.poster) {
+									url = this.constructPosterUrl(movie.poster, movie.title);
+								}
+								return (
+									<Link
+										key={movie.unique_id}
+										to={`/content/${movie.unique_id}`}
+										onClick={this.props.closeSearch}
+									>
+										<Items>
+											<Poster src={url} />
+											<Title>
+												{movie.title.substring(0, 10) + '...'}(
+												{movie.original_release_year})
+											</Title>
+										</Items>
+									</Link>
+								);
+							})}
+					</Grid>
+				</Container>
+			</Searchpage>
+		);
+	}
+}
 export default Search;
