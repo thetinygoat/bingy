@@ -82,6 +82,7 @@ const Holder = styled.div`
 	min-width: 150px;
 	max-width: 150px;
 	display: flex;
+	font-size: 0.8em;
 	text-align: center;
 	background-color: #284058;
 	justify-content: center;

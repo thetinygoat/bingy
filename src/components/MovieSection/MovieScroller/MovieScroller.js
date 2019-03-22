@@ -27,6 +27,7 @@ const Holder = styled.div`
 	height: 87%;
 	width: 150px;
 	display: flex;
+	font-size: 0.8em;
 	background-color: #284058;
 	justify-content: center;
 	align-items: center;

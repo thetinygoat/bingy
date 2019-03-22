@@ -206,6 +206,7 @@ const Holder = styled.div`
 	background-color: #284058;
 	justify-content: center;
 	align-items: center;
+	font-size: 0.8em;
 	// @media (max-width: 730px) {
 	// 	min-width: 120px;
 	// 	max-width: 120px;
