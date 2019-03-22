@@ -216,13 +216,13 @@ const ContentPage = props => {
 		let res = await axios.post('/movie-page', {
 			unique_id: props.match.params.id
 		});
-		console.log(res.data);
 		let movieData = res.data.movie;
 		let reccomendedData = res.data.reccomended_movies;
 		let imdbRating, tomatoRating;
 		movieData.scoring.map(m => {
 			if (m.provider_type === 'tomato:meter') tomatoRating = m.value;
 			else if (m.provider_type === 'imdb:score') imdbRating = m.value;
+			return null;
 		});
 		setContentData({
 			genres: movieData.genre_mapping,

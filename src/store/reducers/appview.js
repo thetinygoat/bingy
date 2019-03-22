@@ -1,6 +1,6 @@
 import { MOBILE_VIEW, DESKTOP_VIEW } from '../actions/actions';
 const initialState = {
-	isMobile: false,
+	isMobile: true,
 	isDesktop: false
 };
 

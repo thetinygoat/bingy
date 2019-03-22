@@ -34,7 +34,7 @@ const AvatarContainer = styled.div`
 const Avatar = styled.img`
 	margin: 0 0 0 2em;
 	position: relative;
-	top: -3em;
+	top: -4em;
 	border-radius: 50%;
 	@media (max-width: 730px) {
 		margin: 0;
@@ -64,29 +64,29 @@ const SubHeading = styled.h1`
 		margin: 0.5em;
 	}
 `;
-const Scroller = styled.div`
-	display: flex;
-	overflow: auto;
-`;
-const ScrollerContainer = styled.section`
-	padding: 1em;
-	display: flex;
-	width: 90%;
-	flex-direction: column;
-	text-align: left !important;
-	margin-top: 1em;
-	@media (max-width: 730px) {
-		width: 107%;
-	}
-`;
-const ReccomendedPoster = styled.img`
-	margin-right: 1.2em;
-	border-radius: 4px;
-	width: 150px;
-	@media (max-width: 730px) {
-		width: 120px;
-	}
-`;
+// const Scroller = styled.div`
+// 	display: flex;
+// 	overflow: auto;
+// `;
+// const ScrollerContainer = styled.section`
+// 	padding: 1em;
+// 	display: flex;
+// 	width: 90%;
+// 	flex-direction: column;
+// 	text-align: left !important;
+// 	margin-top: 1em;
+// 	@media (max-width: 730px) {
+// 		width: 107%;
+// 	}
+// `;
+// const ReccomendedPoster = styled.img`
+// 	margin-right: 1.2em;
+// 	border-radius: 4px;
+// 	width: 150px;
+// 	@media (max-width: 730px) {
+// 		width: 120px;
+// 	}
+// `;
 export class Profile extends Component {
 	render() {
 		return (

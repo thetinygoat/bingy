@@ -20,7 +20,6 @@ const MovieSection = props => {
 	let data = Object.keys(props.movieData).map(key => {
 		return { content: [props.movieData[key]], category: key };
 	});
-	console.log(data);
 	return (
 		<div>
 			{data.map(category => {

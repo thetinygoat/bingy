@@ -29,7 +29,6 @@ const Home = () => {
 	const fetchData = async () => {
 		let res = await axios.get('/home-page');
 		let data = res.data;
-		console.log(data);
 		if (data) {
 			setLoading(false);
 			setMovieData({
