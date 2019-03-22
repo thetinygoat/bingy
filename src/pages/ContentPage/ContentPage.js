@@ -6,6 +6,7 @@ import rotten from './rotten.png';
 import imdb from './imdb.png';
 import { Link } from 'react-router-dom';
 import Spinner from '../../components/Spinner/Spinner';
+import ReactGA from 'react-ga';
 const Bg = styled.div`
 	height: 100vh;
 	width: 100%;
@@ -239,6 +240,7 @@ const ContentPage = props => {
 		setLoading(false);
 	};
 	useEffect(() => {
+		ReactGA.pageview(`/content/${props.match.params.id}`);
 		window.scrollTo(0, 0);
 		fetchFullContentData();
 		return () => {

@@ -4,15 +4,21 @@ import { mobileView, desktopView } from './store/actions/actions';
 import Home from './pages/Home/Home';
 import ContentPage from './pages/ContentPage/ContentPage';
 import BottomBar from './components/BottomBar/BottomBar';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, withRouter } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import Search from './pages/Search/Search';
 import ReactGA from 'react-ga';
+ReactGA.initialize('UA-136783569-1', {
+	debug: true
+});
+
 class App extends Component {
 	state = {
 		loggedIn: false
 	};
 	componentDidMount() {
+		ReactGA.pageview('/');
+		console.log(this.props.location);
 		window.addEventListener('load', () => {
 			if (window.innerWidth > 730) {
 				this.props.handleDesktopView();
@@ -29,10 +35,6 @@ class App extends Component {
 		});
 	}
 	render() {
-		ReactGA.initialize('UA-136781842-1', {
-			debug: true
-		});
-		ReactGA.pageview(window.location.pathname + window.location.search);
 		return (
 			<BrowserRouter>
 				<div>
