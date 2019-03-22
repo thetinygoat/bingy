@@ -169,33 +169,7 @@ const ScrollerContainer = styled.section`
 		width: 107%;
 	}
 `;
-const ReccomendedPoster = styled.img`
-	margin-right: 1.2em;
-	border-radius: 4px;
-	width: 150px;
-	@media (max-width: 730px) {
-		width: 120px;
-	}
-`;
-// const Holder = styled.div`
-// 	// margin-right: 1.2em;
-// 	border-radius: 4px;
-// 	height: 213px;
-// 	min-width: 150px;
-// 	max-width: 150px;
-// 	display: flex;
-// 	text-align: center;
-// 	background-color: #284058;
-// 	justify-content: center;
-// 	align-items: center;
-// 	font-size: 0.8em;
-// 	// @media (max-width: 730px) {
-// 	// 	min-width: 120px;
-// 	// 	max-width: 120px;
-// 	// 	height: 170px;
-// 	// }
-// 	color: grey;
-// `;
+
 const ContentPage = props => {
 	const [contentData, setContentData] = useState({
 		genres: [],

@@ -4,7 +4,7 @@ import axios from '../../axios';
 import { Link } from 'react-router-dom';
 import { DebounceInput } from 'react-debounce-input';
 import { FixedHolder } from '../../components/Holder';
-// import { Poster } from '../../components/Poster';
+import { Poster } from '../../components/Poster';
 const Searchpage = styled.section`
 	position: fixed;
 	height: 100vh;
@@ -15,14 +15,7 @@ const Searchpage = styled.section`
 	overflow-x: hidden;
 	z-index: 99999;
 `;
-const Poster = styled.img`
-	margin-right: 1.2em;
-	border-radius: 4px;
-	width: 150px;
-	@media (max-width: 730px) {
-		width: 120px;
-	}
-`;
+
 const Container = styled.div`
 	width: 95%;
 	margin: auto;

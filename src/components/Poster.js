@@ -4,6 +4,6 @@ export const Poster = styled.img`
 	border-radius: 4px;
 	width: 150px;
 	@media (max-width: 730px) {
-		width: ${props => (props.contentPage ? '120px' : '213px')};
+		width: ${props => (props.contentPage ? '150px' : '120px')};
 	}
 `;
