@@ -4,6 +4,7 @@ import Search from '../../pages/Search/Search';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { provider, auth } from '../../client';
+import logo from './logo.png';
 import {
 	loginInit,
 	loginMiddleware,
@@ -20,6 +21,7 @@ const Navbar = styled.section`
 	box-sizing: border-box;
 	box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
 	z-index: 999;
+	box-sizing: border-box;
 `;
 const Container = styled.div`
 	width: 85%;
@@ -34,6 +36,28 @@ const Actions = styled.div`
 `;
 const Action = styled.div`
 	margin-right: ${props => (props.last ? '0px' : '20px')};
+`;
+const Logo = styled.img`
+	display: block;
+	width: 30%;
+	position: relative;
+	top: 3px;
+	@media (max-width: 730px) {
+		width: 25%;
+	}
+`;
+const Avatar = styled.img`
+	border-radius: 50%;
+	width: 30%;
+`;
+const FacebookButton = styled.button`
+	cursor: pointer;
+	padding: 1em;
+	background-color: #2f477a;
+	border: none;
+	color: #e2e2e2;
+	font-weight: bold;
+	border-radius: 4px;
 `;
 export class MobileTopBar extends Component {
 	state = {
@@ -88,7 +112,7 @@ export class MobileTopBar extends Component {
 				userName = data.displayName;
 				phone = data.phoneNumber;
 				email = data.email;
-				photoUrl = data.photoURL;
+				photoUrl = response.additionalUserInfo.profile.picture.data.url;
 				userId = response.additionalUserInfo.profile.id;
 				const payload = {
 					userName,
@@ -106,24 +130,27 @@ export class MobileTopBar extends Component {
 		}
 	};
 	render() {
-		let userDetails = (
-			<div>
+		let userDetails = this.props.view.isDesktop ? (
+			<Link to={`/profile/${this.props.auth.userId}`}>
 				<Actions>
 					<Action>
-						<p>{this.props.auth.userName}</p>
+						<p>{this.props.auth.userName.split(' ')[0]}</p>
 					</Action>
 					<Action>
-						<button onClick={this.handlelogout}>logout</button>
+						<Avatar src={this.props.auth.imageUrl} />
 					</Action>
+					{/* <Action>
+				<button onClick={this.handlelogout}>logout</button>
+			</Action> */}
 				</Actions>
-			</div>
-		);
+			</Link>
+		) : null;
 		return (
 			<div>
 				<Navbar>
 					<Container>
 						<Link to="/" style={{ color: '#e2e2e2' }}>
-							<h1>Bingy</h1>
+							<Logo src={logo} />
 						</Link>
 						<Actions>
 							{this.props.view.isMobile ? null : (
@@ -153,13 +180,13 @@ export class MobileTopBar extends Component {
 							</Action>
 							{this.props.auth.isLoggedIn ? (
 								userDetails
-							) : (
-								<React.Fragment>
-									<Action>
-										<button onClick={this.handlelogin}>login</button>
-									</Action>
-								</React.Fragment>
-							)}
+							) : this.props.view.isDesktop ? (
+								<Action>
+									<FacebookButton onClick={this.handlelogin}>
+										Login with Facebook
+									</FacebookButton>
+								</Action>
+							) : null}
 						</Actions>
 					</Container>
 				</Navbar>
