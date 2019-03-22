@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 import './BottomBar.css';
 const Bar = styled.section`
 	background-color: #0a1016;
@@ -25,35 +26,58 @@ const IconDesc = styled.div`
 	font-size: 0.8em;
 `;
 
-const BottomBar = () => {
-	return (
-		<Bar className="IconColor">
-			<IconContainer>
-				<NavLink to="/">
-					<i className="material-icons">home</i>
-				</NavLink>
-				<IconDesc>Home</IconDesc>
-			</IconContainer>
-			<IconContainer>
-				<NavLink to="/">
-					<i className="material-icons">movie</i>
-				</NavLink>
-				<IconDesc>Movies</IconDesc>
-			</IconContainer>
-			<IconContainer>
-				<NavLink to="/">
-					<i className="material-icons">tv</i>
-				</NavLink>
-				<IconDesc>Series</IconDesc>
-			</IconContainer>
-			<IconContainer>
-				<NavLink to="/">
-					<i className="material-icons">face</i>
-				</NavLink>
-				<IconDesc>Profile</IconDesc>
-			</IconContainer>
-		</Bar>
-	);
+class BottomBar extends Component {
+	state = {
+		profileUrl: '',
+		profileRedirect: null
+	};
+	componentDidMount() {
+		if (this.props.auth.isLoggedIn && this.props.auth.userId) {
+			let url = `/profile/${this.props.auth.userId}`;
+			this.setState({ profileUrl: url });
+		}
+	}
+	render() {
+		return (
+			<Bar className="IconColor">
+				<IconContainer>
+					<NavLink to="/">
+						<i className="material-icons">home</i>
+					</NavLink>
+					<IconDesc>Home</IconDesc>
+				</IconContainer>
+				<IconContainer>
+					<NavLink to="/">
+						<i className="material-icons">movie</i>
+					</NavLink>
+					<IconDesc>Movies</IconDesc>
+				</IconContainer>
+				<IconContainer>
+					<NavLink to="/">
+						<i className="material-icons">tv</i>
+					</NavLink>
+					<IconDesc>Series</IconDesc>
+				</IconContainer>
+				<IconContainer>
+					{this.props.auth.isLoggedIn && this.props.auth.userId ? (
+						<NavLink to={`/profile/${this.props.auth.userId}`}>
+							<i className="material-icons">face</i>
+						</NavLink>
+					) : (
+						<NavLink to="/mobile/login">
+							<i className="material-icons">face</i>
+						</NavLink>
+					)}
+					<IconDesc>Profile</IconDesc>
+				</IconContainer>
+			</Bar>
+		);
+	}
+}
+const mapStateToProps = state => {
+	return {
+		view: state.screenView,
+		auth: state.auth
+	};
 };
-
-export default BottomBar;
+export default connect(mapStateToProps)(BottomBar);
