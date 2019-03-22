@@ -3,7 +3,7 @@ export const DynamicHolder = styled.div`
 	margin-right: 1.2em;
 	border-radius: 4px;
 	height: 85%;
-	width: 150px;
+	width: 160px;
 	display: flex;
 	font-size: 0.8em;
 	text-align: center;
@@ -20,8 +20,8 @@ export const FixedHolder = styled.div`
 	margin-right: ${props => (props.search ? '1.2em' : '0')};
 	border-radius: 4px;
 	height: 213px;
-	min-width: 150px;
-	max-width: 150px;
+	min-width: 160px;
+	max-width: 160px;
 	display: flex;
 	font-size: 0.8em;
 	text-align: center;
@@ -29,8 +29,8 @@ export const FixedHolder = styled.div`
 	justify-content: center;
 	align-items: center;
 	@media (max-width: 730px) {
-		min-width: ${props => (props.search ? '120px' : '150')};
-		max-width: ${props => (props.search ? '120px' : '150')};
+		min-width: ${props => (props.search ? '120px' : '160px')};
+		max-width: ${props => (props.search ? '120px' : '160px')};
 		height: ${props => (props.search ? '170px' : '213px')};
 	}
 	color: grey;

@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import Spinner from '../../components/Spinner/Spinner';
 import { Heading, SubHeading, Title } from '../../components/Typography';
 import { FixedHolder, DynamicHolder } from '../../components/Holder';
+import { Poster } from '../../components/Poster';
 import ReactGA from 'react-ga';
 const Bg = styled.div`
 	height: 100vh;
@@ -41,10 +42,6 @@ const ContentContainer = styled.section`
 	flex-direction: column;
 	@media (max-width: 730px) {
 	}
-`;
-const Poster = styled.img`
-	border-radius: 4px;
-	box-shadow: inset 0 0 10px #000000;
 `;
 const TopActions = styled.section`
 	display: flex;
@@ -315,6 +312,7 @@ const ContentPage = props => {
 								src={contentData.poster}
 								alt={contentData.title}
 								key={contentData.poster}
+								contentPage
 							/>
 						) : (
 							<FixedHolder>
@@ -388,7 +386,7 @@ const ContentPage = props => {
 							return (
 								<Link to={`/content/${r.unique_id}`} key={r.unique_id}>
 									{r.poster ? (
-										<ReccomendedPoster src={url} />
+										<Poster contentPage src={url} />
 									) : (
 										<DynamicHolder>
 											{r.title} ({r.original_release_year})

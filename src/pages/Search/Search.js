@@ -4,6 +4,7 @@ import axios from '../../axios';
 import { Link } from 'react-router-dom';
 import { DebounceInput } from 'react-debounce-input';
 import { FixedHolder } from '../../components/Holder';
+// import { Poster } from '../../components/Poster';
 const Searchpage = styled.section`
 	position: fixed;
 	height: 100vh;
