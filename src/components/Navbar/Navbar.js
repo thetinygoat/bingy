@@ -35,6 +35,8 @@ const Actions = styled.div`
 	align-items: center;
 `;
 const Action = styled.div`
+	display: flex;
+	align-items: center;
 	margin-right: ${props => (props.last ? '0px' : '20px')};
 `;
 const Logo = styled.img`
@@ -157,12 +159,6 @@ export class MobileTopBar extends Component {
 									<Action>
 										<Link to="/">Home</Link>
 									</Action>
-									<Action>
-										<Link to="/">Movies</Link>
-									</Action>
-									<Action>
-										<Link to="/">TV Series</Link>
-									</Action>
 								</React.Fragment>
 							)}
 							<Action
@@ -176,6 +172,7 @@ export class MobileTopBar extends Component {
 								style={{ cursor: 'pointer' }}
 							>
 								<i className="material-icons">search</i>
+								{this.props.view.isDesktop ? <p>Search</p> : null}
 							</Action>
 							{this.props.auth.isLoggedIn ? (
 								userDetails
