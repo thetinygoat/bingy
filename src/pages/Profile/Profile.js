@@ -95,15 +95,12 @@ export class Profile extends Component {
 		return (
 			<Container>
 				<AvatarContainer>
-					<Cover src="https://benrequena.com/wp-content/uploads/twitter-header-photo-template.jpg" />
+					<Cover src="https://cdn.pixabay.com/photo/2015/11/19/08/52/banner-1050629_960_720.jpg" />
 					<Avatar src={this.props.auth.imageUrl} />
 					<UserInfo>
 						<Heading>{this.props.auth.userName}</Heading>
-						<SubHeading>Rookie</SubHeading>
-						<Bio>
-							loremlorem loremloremloremlo remloremloremlo remloremloremloremlo
-							rem
-						</Bio>
+						{/* <SubHeading>Rookie</SubHeading> */}
+						<Bio />
 					</UserInfo>
 				</AvatarContainer>
 				<UserData>
