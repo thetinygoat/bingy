@@ -26,7 +26,15 @@ export const loginInit = () => {
 
 export const loginMiddleware = payload => {
 	return async dispatch => {
-		let response = await axios.post('/fb-auth', payload.payload);
+		const data = payload.payload;
+		const user = {
+			facebookUserID: data.userId,
+			email: data.email,
+			image_url: data.imageUrl,
+			name: data.userName,
+			phone_number: data.phone
+		};
+		let response = await axios.post('/fb-auth', user);
 		if (response) {
 			localStorage.setItem('userName', payload.payload.userName);
 			localStorage.setItem('imageUrl', payload.payload.imageUrl);

@@ -9,7 +9,9 @@ import Spinner from '../../components/Spinner/Spinner';
 import { Heading, SubHeading, Title } from '../../components/Typography';
 import { FixedHolder, DynamicHolder } from '../../components/Holder';
 import { Poster } from '../../components/Poster';
+import { connect } from 'react-redux';
 import ReactGA from 'react-ga';
+import ButtonSpinner from '../../components/ButtonSpinner/ButtonSpinner';
 const Bg = styled.div`
 	height: 100vh;
 	width: 100%;
@@ -104,6 +106,7 @@ const ListAction = styled.div`
 	font-weight: bold;
 	padding: 0.8em;
 	margin-right: 0.5em;
+	cursor: pointer;
 `;
 const Description = styled.section`
 	text-align: left !important;
@@ -170,6 +173,20 @@ const ScrollerContainer = styled.section`
 	}
 `;
 
+const Notification = styled.div`
+	position: fixed;
+	width: 60%;
+	left: 0;
+	right: 0;
+	margin: auto;
+	top: 12%;
+	text-align: center;
+	z-index: 99999999;
+	background-color: ${props => (props.success ? 'green' : 'red')};
+	padding: 1em;
+	border-radius: 10px;
+`;
+
 const ContentPage = props => {
 	const [contentData, setContentData] = useState({
 		genres: [],
@@ -183,6 +200,17 @@ const ContentPage = props => {
 		poster: '',
 		title: '',
 		runtime: ''
+	});
+	const [notification, setNotification] = useState({
+		success: false,
+		fail: false,
+		visible: false,
+		timeOut: null,
+		message: ''
+	});
+	const [buttonLoading, setButtonLoading] = useState({
+		loading: false,
+		type: ''
 	});
 	const [reccomendations, setReccomendations] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -221,6 +249,7 @@ const ContentPage = props => {
 		window.scrollTo(0, 0);
 		fetchFullContentData();
 		return () => {
+			clearTimeout(notification.timeOut);
 			setLoading(true);
 		};
 	}, [props.match.params.id]);
@@ -260,10 +289,114 @@ const ContentPage = props => {
 		const RES = 's166';
 		return `${BASE_URL}/${TYPE}/${ID}/${RES}/${title}`;
 	};
+	const handleWatchList = async () => {
+		if (!props.auth.isLoggedIn) {
+			setNotification({
+				visible: true,
+				fail: true,
+				message: 'Please Login to continue'
+			});
+			notification.timeOut = setTimeout(() => {
+				setNotification({ visible: false });
+			}, 3000);
+			return;
+		}
+		setButtonLoading({ loading: true, type: 'watch' });
+		let headers = {
+			'Content-Type': 'application/json',
+			'x-auth-token': props.auth.authToken
+		};
+		try {
+			let response = await axios.post(
+				'/api/users/add-to-wishlist',
+				{
+					title: contentData.title,
+					original_release_year: contentData.releaseYear
+				},
+				{ headers: headers }
+			);
+			if (response) {
+				setButtonLoading({ loading: false, type: '' });
+				setNotification({
+					visible: true,
+					success: true,
+					message: 'Added to your watch list'
+				});
+				notification.timeOut = setTimeout(() => {
+					setNotification({ visible: false });
+				}, 3000);
+			}
+		} catch (err) {
+			setButtonLoading({ loading: false, type: '' });
+			setNotification({
+				visible: true,
+				fail: true,
+				message: 'Something went wrong'
+			});
+			notification.timeOut = setTimeout(() => {
+				setNotification({ visible: false });
+			}, 3000);
+		}
+	};
+	const handleWishList = async () => {
+		if (!props.auth.isLoggedIn) {
+			setNotification({
+				visible: true,
+				fail: true,
+				message: 'Please Login to continue'
+			});
+			notification.timeOut = setTimeout(() => {
+				setNotification({ visible: false });
+			}, 3000);
+			return;
+		}
+		setButtonLoading({ loading: true, type: 'wish' });
+		let headers = {
+			'Content-Type': 'application/json',
+			'x-auth-token': props.auth.authToken
+		};
+		try {
+			let response = await axios.post(
+				'/api/users/add-to-wishlist',
+				{
+					title: contentData.title,
+					original_release_year: contentData.releaseYear
+				},
+				{ headers: headers }
+			);
+			if (response) {
+				setButtonLoading({ loading: false, type: '' });
+				setNotification({
+					visible: true,
+					success: true,
+					message: 'Added to your wish list'
+				});
+				notification.timeOut = setTimeout(() => {
+					setNotification({ visible: false });
+				}, 3000);
+			}
+		} catch (err) {
+			setButtonLoading({ loading: false, type: '' });
+			setNotification({
+				visible: true,
+				fail: true,
+				message: 'Something went wrong'
+			});
+			notification.timeOut = setTimeout(() => {
+				setNotification({ visible: false });
+			}, 5000);
+		}
+	};
 	return loading ? (
 		<Spinner />
 	) : (
 		<div>
+			{notification.visible && notification.success && (
+				<Notification success>{notification.message}</Notification>
+			)}
+			{notification.visible && notification.fail && (
+				<Notification>{notification.message}</Notification>
+			)}
 			<Bg bg={contentData.poster} />
 			<Gradient />
 			<ContentContainer>
@@ -310,11 +443,24 @@ const ContentPage = props => {
 							<Offers offers={contentData.offers} />
 						</OfferContainer>
 						<ListActions>
-							<ListAction>
-								<i className="material-icons">add</i> Want To See
+							<ListAction onClick={() => handleWishList()}>
+								{buttonLoading.loading && buttonLoading.type === 'wish' ? (
+									<ButtonSpinner />
+								) : (
+									<React.Fragment>
+										<i className="material-icons">add</i> <p>Want To See</p>
+									</React.Fragment>
+								)}
 							</ListAction>
-							<ListAction>
-								<i className="material-icons">done</i>Seen It
+							<ListAction onClick={() => handleWatchList()}>
+								{buttonLoading.loading && buttonLoading.type === 'watch' ? (
+									<ButtonSpinner />
+								) : (
+									<React.Fragment>
+										<i className="material-icons">done</i>
+										<p>Seen It</p>
+									</React.Fragment>
+								)}
 							</ListAction>
 						</ListActions>
 						<Description>
@@ -337,14 +483,18 @@ const ContentPage = props => {
 							) : null}
 							<Hr />
 							<Stats>
-								<Stat>
-									<i className="material-icons">access_time</i>{' '}
-									{contentData.runtime}
-								</Stat>
-								<Stat>
-									<i className="material-icons">calendar_today</i>{' '}
-									{contentData.releaseYear}
-								</Stat>
+								{contentData.runtime && (
+									<Stat>
+										<i className="material-icons">access_time</i>{' '}
+										{contentData.runtime}
+									</Stat>
+								)}
+								{contentData.releaseYear && (
+									<Stat>
+										<i className="material-icons">calendar_today</i>{' '}
+										{contentData.releaseYear}
+									</Stat>
+								)}
 							</Stats>
 						</Description>
 					</InfoContainer>
@@ -377,5 +527,10 @@ const ContentPage = props => {
 		</div>
 	);
 };
-
-export default ContentPage;
+const mapStateToProps = state => {
+	return {
+		view: state.screenView,
+		auth: state.auth
+	};
+};
+export default connect(mapStateToProps)(ContentPage);
