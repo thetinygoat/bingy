@@ -47,18 +47,6 @@ class BottomBar extends Component {
 					<IconDesc>Home</IconDesc>
 				</IconContainer>
 				<IconContainer>
-					<NavLink to="/">
-						<i className="material-icons">movie</i>
-					</NavLink>
-					<IconDesc>Movies</IconDesc>
-				</IconContainer>
-				<IconContainer>
-					<NavLink to="/">
-						<i className="material-icons">tv</i>
-					</NavLink>
-					<IconDesc>Series</IconDesc>
-				</IconContainer>
-				<IconContainer>
 					{this.props.auth.isLoggedIn && this.props.auth.userId ? (
 						<NavLink to={`/profile/${this.props.auth.userId}`}>
 							<i className="material-icons">face</i>
