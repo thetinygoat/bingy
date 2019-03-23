@@ -1,5 +1,6 @@
 {
   "projects": {
-    "dev": "bingy-devel"
+    "dev": "bingy-devel",
+    "prod": "bingy-prod"
   }
 }
