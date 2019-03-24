@@ -2,12 +2,12 @@ import firebase from 'firebase';
 
 // Initialize Firebase
 var config = {
-	apiKey: 'AIzaSyBRFL5qW4QMEucsWcWGfuSY4yG2cbsuhqc',
-	authDomain: 'bingy-prod.firebaseapp.com',
-	databaseURL: 'https://bingy-prod.firebaseio.com',
-	projectId: 'bingy-prod',
-	storageBucket: 'bingy-prod.appspot.com',
-	messagingSenderId: '453936517741'
+	apiKey: 'AIzaSyCJINoWiBwC-T0PqgK5hcCDqxBGtHsWcmM',
+	authDomain: 'bingy-prod-25e0a.firebaseapp.com',
+	databaseURL: 'https://bingy-prod-25e0a.firebaseio.com',
+	projectId: 'bingy-prod-25e0a',
+	storageBucket: 'bingy-prod-25e0a.appspot.com',
+	messagingSenderId: '591281018597'
 };
 firebase.initializeApp(config);
 
