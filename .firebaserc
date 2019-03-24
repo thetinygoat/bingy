@@ -1,6 +1,6 @@
 {
   "projects": {
-    "dev": "bingy-devel",
-    "prod": "bingy-prod"
+    "prod": "bingy-prod-25e0a",
+    "dev": "bingy-development"
   }
 }
