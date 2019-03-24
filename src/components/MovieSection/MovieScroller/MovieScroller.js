@@ -8,24 +8,27 @@ const Scroller = styled.section`
 	display: flex;
 `;
 
-const MovieScroller = props => {
-	let data = props.category.content[0].map(movie => {
-		return (
-			<Link key={movie.unique_id} to={`/content/${movie.unique_id}`}>
-				{movie.poster ? (
-					<Poster src={movie.poster} alt={movie.title} key={movie.poster} />
-				) : (
-					<DynamicHolder>
-						{movie.title} ({movie.original_release_year})
-					</DynamicHolder>
-				)}
-				<Title>
-					{movie.title}({movie.original_release_year})
-				</Title>
-			</Link>
-		);
-	});
-	return <Scroller>{data}</Scroller>;
+const MovieScroller = ({ data }) => {
+	return (
+		<Scroller>
+			{data.map(movie => {
+				return (
+					<Link key={movie.unique_id} to={`/content/${movie.unique_id}`}>
+						{movie.poster ? (
+							<Poster src={movie.poster} alt={movie.title} key={movie.poster} />
+						) : (
+							<DynamicHolder>
+								{movie.title} ({movie.original_release_year})
+							</DynamicHolder>
+						)}
+						<Title>
+							{movie.title}({movie.original_release_year})
+						</Title>
+					</Link>
+				);
+			})}
+		</Scroller>
+	);
 };
 
 export default MovieScroller;

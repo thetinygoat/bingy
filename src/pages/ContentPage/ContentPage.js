@@ -186,7 +186,9 @@ const Notification = styled.div`
 	padding: 1em;
 	border-radius: 10px;
 `;
-
+const Input = styled.input`
+	display: none;
+`;
 const ContentPage = props => {
 	const [contentData, setContentData] = useState({
 		genres: [],
@@ -308,7 +310,7 @@ const ContentPage = props => {
 		};
 		try {
 			let response = await axios.post(
-				'/api/users/add-to-wishlist',
+				'/api/users/add-to-watchlist',
 				{
 					title: contentData.title,
 					original_release_year: contentData.releaseYear
@@ -338,6 +340,7 @@ const ContentPage = props => {
 			}, 3000);
 		}
 	};
+
 	const handleWishList = async () => {
 		if (!props.auth.isLoggedIn) {
 			setNotification({
@@ -391,6 +394,7 @@ const ContentPage = props => {
 		<Spinner />
 	) : (
 		<div>
+			<Input className="clipboard" />
 			{notification.visible && notification.success && (
 				<Notification success>{notification.message}</Notification>
 			)}
@@ -510,14 +514,16 @@ const ContentPage = props => {
 							return (
 								<Link to={`/content/${r.unique_id}`} key={r.unique_id}>
 									{r.poster ? (
-										<Poster contentPage src={url} />
+										<Poster src={url} />
 									) : (
 										<DynamicHolder>
 											{r.title} ({r.original_release_year})
 										</DynamicHolder>
 									)}
 
-									<Title>{r.title}</Title>
+									<Title>
+										{r.title}({r.original_release_year})
+									</Title>
 								</Link>
 							);
 						})}

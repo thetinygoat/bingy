@@ -107,6 +107,7 @@ export class MobileTopBar extends Component {
 		let userName, phone, email, photoUrl, accessToken, userId;
 		try {
 			let response = await auth().signInWithPopup(provider);
+			console.log(response);
 			if (response.user) {
 				let data = response.user;
 				accessToken = response.credential.accessToken;

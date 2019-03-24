@@ -15,7 +15,8 @@ const initialState = {
 	isLoggedIn: false,
 	loginSuccess: false,
 	loginFail: false,
-	loginInit: false
+	loginInit: false,
+	allowedToGobacktoProfile: true
 };
 
 const reducer = (state = initialState, action) => {
@@ -43,7 +44,7 @@ const reducer = (state = initialState, action) => {
 	}
 	case LOGOUT: {
 		return {
-			...state,
+			...initialState,
 			isLoggedIn: false
 		};
 	}

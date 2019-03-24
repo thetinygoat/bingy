@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 export const Poster = styled.img`
-	margin-right: 1.2em;
+	margin-right: ${props => (props.contentPage ? '0' : '1.2em')};
 	border-radius: 4px;
 	width: 150px;
 	@media (max-width: 730px) {

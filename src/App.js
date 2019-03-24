@@ -4,7 +4,7 @@ import { mobileView, desktopView } from './store/actions/actions';
 import Home from './pages/Home/Home';
 import ContentPage from './pages/ContentPage/ContentPage';
 import BottomBar from './components/BottomBar/BottomBar';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import Search from './pages/Search/Search';
 import Profile from './pages/Profile/Profile';
@@ -47,6 +47,11 @@ class App extends Component {
 					<Switch>
 						<Route path="/" exact component={Home} />
 						<Route path="/search" component={Search} />
+						{/* {this.props.auth.isLoggedIn ? (
+							
+						) : (
+							<Redirect to="/mobile/login" />
+						)} */}
 						<Route path="/profile/:id" component={Profile} />
 						<Route path="/mobile/login" component={MobileLogin} />
 						<Route path="/content/:id" component={ContentPage} />

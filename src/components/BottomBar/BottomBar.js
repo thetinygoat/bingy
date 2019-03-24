@@ -58,12 +58,12 @@ class BottomBar extends Component {
 					)}
 					<IconDesc>Profile</IconDesc>
 				</IconContainer>
-				<IconContainer>
+				{/* <IconContainer>
 					<NavLink to="/">
 						<i className="material-icons">feedback</i>
 					</NavLink>
 					<IconDesc>Review</IconDesc>
-				</IconContainer>
+				</IconContainer> */}
 			</Bar>
 		);
 	}

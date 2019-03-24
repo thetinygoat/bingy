@@ -16,18 +16,20 @@ const Container = styled.section`
 		margin: 1em 0 1em 1em;
 	}
 `;
-const MovieSection = props => {
-	let data = Object.keys(props.movieData).map(key => {
-		return { content: [props.movieData[key]], category: key };
-	});
+const MovieSection = ({ movieData }) => {
+	// console.log(props.movieData);
 	return (
 		<div>
-			{data.map(category => {
+			{movieData.map(category => {
 				return (
-					<Container key={category.category}>
-						<SubHeading>{category.category}</SubHeading>
+					<Container key={category.name}>
+						<SubHeading>
+							{(category.name.charAt(0).toUpperCase() + category.name.slice(1))
+								.split('_')
+								.join(' ')}
+						</SubHeading>
 						<MovieSectionContainer>
-							<MovieScroller category={category} />
+							<MovieScroller data={category.data} />
 						</MovieSectionContainer>
 					</Container>
 				);
