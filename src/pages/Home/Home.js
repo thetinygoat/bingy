@@ -57,7 +57,7 @@ const Home = props => {
 		autoplay: true,
 		autoplaySpeed: 10000
 	};
-	const mobileCarouselIds = ['jtmoeqhx', 'jtmocwav', 'jtmoet1l'];
+	const mobileCarouselIds = ['jtpl8syz','jtmoeqhx', 'jtmocwav', 'jtmoet1l'];
 	let carouselContent = carousel.map((c, i) => {
 		return (
 			<div key={c.unique_id}>
@@ -69,6 +69,9 @@ const Home = props => {
 	});
 	let desktopCarouselContent = (
 		<Slider {...settings}>
+            <Link to="/content/jtpl8syz">
+                <img src="https://m.media-amazon.com/images/G/01/digital/video/sonata/Hero_PV_IN_Manikarnika/cd7b8303-8e82-4627-9bf5-e34611bd2a29._UR3000,600_SX1500_FMjpg_.jpg" />
+            </Link>
 			<Link to="/content/jtmoet1l">
 				<img src="https://m.media-amazon.com/images/G/01/digital/video/sonata/Hero_PV_IN_MIH_Review/8320f0ae-b5df-4493-8576-b0a15a362cb7._UR3000,600_SX1500_FMwebp_.jpg" />
 			</Link>
