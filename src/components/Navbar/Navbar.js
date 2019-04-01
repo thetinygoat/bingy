@@ -98,7 +98,12 @@ export class MobileTopBar extends Component {
 		});
 	};
 	handlelogout = async () => {
-		localStorage.clear();
+		localStorage.removeItem('userName');
+		localStorage.removeItem('phone');
+		localStorage.removeItem('email');
+		localStorage.removeItem('photoUrl');
+		localStorage.removeItem('accessToken');
+		localStorage.removeItem('userId');
 		await auth().signOut();
 		this.props.logout();
 	};
@@ -171,6 +176,7 @@ export class MobileTopBar extends Component {
 									})
 								}
 								style={{ cursor: 'pointer' }}
+								className="desc_search_role"
 							>
 								<i className="material-icons">search</i>
 								{this.props.view.isDesktop ? <p>Search</p> : null}

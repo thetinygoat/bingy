@@ -61,7 +61,12 @@ export const loginFail = () => {
 };
 
 export const logout = () => {
-	localStorage.clear();
+	localStorage.removeItem('userName');
+	localStorage.removeItem('phone');
+	localStorage.removeItem('email');
+	localStorage.removeItem('photoUrl');
+	localStorage.removeItem('accessToken');
+	localStorage.removeItem('userId');
 	return {
 		type: LOGOUT
 	};

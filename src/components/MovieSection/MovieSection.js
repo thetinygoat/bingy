@@ -22,7 +22,7 @@ const MovieSection = ({ movieData }) => {
 		<div>
 			{movieData.map(category => {
 				return (
-					<Container key={category.name}>
+					<Container key={category.name} className="desc_content_role">
 						<SubHeading>
 							{(category.name.charAt(0).toUpperCase() + category.name.slice(1))
 								.split('_')

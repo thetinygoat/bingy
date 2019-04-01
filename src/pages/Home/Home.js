@@ -5,6 +5,7 @@ import Slider from 'react-slick';
 import styled from 'styled-components';
 import Spinner from '../../components/Spinner/Spinner';
 import { connect } from 'react-redux';
+import ReactJoyride, { STATUS } from 'react-joyride';
 import { Link } from 'react-router-dom';
 const SliderContainer = styled.section`
 	width: 100%;
@@ -24,6 +25,62 @@ const Home = props => {
 	const [loading, setLoading] = useState(true);
 	const [movieData, setMovieData] = useState([]);
 	const [carousel, setCarousel] = useState([]);
+	const [steps, setSteps] = useState({
+		run: true,
+		s: [
+			{
+				content: <h1>Welcome To Bingy</h1>,
+				placement: 'center',
+				target: 'body'
+			},
+			{
+				content: <h2>Watch latest movies and TV shows</h2>,
+				placement: 'top',
+				target: '.desc_carousel_role',
+				styles: {
+					options: {
+						width: 300
+					}
+				}
+			},
+			{
+				content: <h2>Your Favourite Titles at your fingertips</h2>,
+				placement: 'top',
+				target: '.desc_content_role',
+				styles: {
+					options: {
+						width: 300
+					}
+				}
+			},
+			{
+				content: <h2>Search for your favourite movies and TV shows</h2>,
+				placement: 'bottom',
+				target: '.desc_search_role',
+				styles: {
+					options: {
+						width: 300
+					}
+				}
+			}
+		]
+	});
+	const handleClickStart = e => {
+		e.preventDefault();
+		setSteps({ run: true });
+	};
+	const handleJoyrideCallback = data => {
+		const { status, type } = data;
+
+		if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+			setSteps({ run: false });
+			localStorage.setItem('firstVisit', false);
+		}
+
+		console.groupCollapsed(type);
+		console.log(data); //eslint-disable-line no-console
+		console.groupEnd();
+	};
 	const fetchData = async () => {
 		let res = await axios.get('/home-page2');
 		let data = res.data;
@@ -41,6 +98,11 @@ const Home = props => {
 		}
 	};
 	useEffect(() => {
+		let firstVisit = localStorage.getItem('firstVisit');
+		console.log(firstVisit);
+		if (firstVisit !== null || firstVisit === false) {
+			setSteps({ run: false });
+		}
 		fetchData();
 		return () => {
 			setLoading(true);
@@ -57,7 +119,7 @@ const Home = props => {
 		autoplay: true,
 		autoplaySpeed: 10000
 	};
-	const mobileCarouselIds = ['jtpl8syz','jtmoeqhx', 'jtmocwav', 'jtmoet1l'];
+	const mobileCarouselIds = ['jtpl8syz', 'jtmoeqhx', 'jtmocwav', 'jtmoet1l'];
 	let carouselContent = carousel.map((c, i) => {
 		return (
 			<div key={c.unique_id}>
@@ -69,9 +131,9 @@ const Home = props => {
 	});
 	let desktopCarouselContent = (
 		<Slider {...settings}>
-            <Link to="/content/jtpl8syz">
-                <img src="https://m.media-amazon.com/images/G/01/digital/video/sonata/Hero_PV_IN_Manikarnika/cd7b8303-8e82-4627-9bf5-e34611bd2a29._UR3000,600_SX1500_FMjpg_.jpg" />
-            </Link>
+			<Link to="/content/jtpl8syz">
+				<img src="https://m.media-amazon.com/images/G/01/digital/video/sonata/Hero_PV_IN_Manikarnika/cd7b8303-8e82-4627-9bf5-e34611bd2a29._UR3000,600_SX1500_FMjpg_.jpg" />
+			</Link>
 			<Link to="/content/jtmoet1l">
 				<img src="https://m.media-amazon.com/images/G/01/digital/video/sonata/Hero_PV_IN_MIH_Review/8320f0ae-b5df-4493-8576-b0a15a362cb7._UR3000,600_SX1500_FMwebp_.jpg" />
 			</Link>
@@ -87,7 +149,21 @@ const Home = props => {
 		<Spinner />
 	) : (
 		<div>
-			<SliderContainer>
+			<ReactJoyride
+				scrollToFirstStep
+				callback={handleJoyrideCallback}
+				continuous
+				run={steps.run}
+				steps={steps.s}
+				styles={{
+					options: {
+						zIndex: 999999
+					}
+				}}
+				showProgress
+				showSkipButton
+			/>
+			<SliderContainer className="desc_carousel_role">
 				{props.view.isDesktop ? (
 					desktopCarouselContent
 				) : (
