@@ -7,6 +7,8 @@ import Spinner from '../../components/Spinner/Spinner';
 import { connect } from 'react-redux';
 import ReactJoyride, { STATUS } from 'react-joyride';
 import { Link } from 'react-router-dom';
+import Tour from 'reactour';
+import carouselPoster from './carousel.jpg';
 const SliderContainer = styled.section`
 	width: 100%;
 `;
@@ -25,61 +27,10 @@ const Home = props => {
 	const [loading, setLoading] = useState(true);
 	const [movieData, setMovieData] = useState([]);
 	const [carousel, setCarousel] = useState([]);
-	const [steps, setSteps] = useState({
-		run: true,
-		s: [
-			{
-				content: <h1>Welcome To Bingy</h1>,
-				placement: 'center',
-				target: 'body'
-			},
-			{
-				content: <h2>Watch latest movies and TV shows</h2>,
-				placement: 'top',
-				target: '.desc_carousel_role',
-				styles: {
-					options: {
-						width: 300
-					}
-				}
-			},
-			{
-				content: <h2>Your Favourite Titles at your fingertips</h2>,
-				placement: 'top',
-				target: '.desc_content_role',
-				styles: {
-					options: {
-						width: 300
-					}
-				}
-			},
-			{
-				content: <h2>Search for your favourite movies and TV shows</h2>,
-				placement: 'bottom',
-				target: '.desc_search_role',
-				styles: {
-					options: {
-						width: 300
-					}
-				}
-			}
-		]
-	});
-	const handleClickStart = e => {
-		e.preventDefault();
-		setSteps({ run: true });
-	};
-	const handleJoyrideCallback = data => {
-		const { status, type } = data;
-
-		if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
-			setSteps({ run: false });
-			localStorage.setItem('firstVisit', false);
-		}
-
-		console.groupCollapsed(type);
-		console.log(data); //eslint-disable-line no-console
-		console.groupEnd();
+	const [tour, setTour] = useState(true);
+	const handleTourCallback = () => {
+		setTour(false);
+		// localStorage.setItem('firstVisit', false);
 	};
 	const fetchData = async () => {
 		let res = await axios.get('/home-page2');
@@ -98,10 +49,11 @@ const Home = props => {
 		}
 	};
 	useEffect(() => {
+		document.title = 'Bingy | Watch and find movies and shows online';
 		let firstVisit = localStorage.getItem('firstVisit');
 		console.log(firstVisit);
 		if (firstVisit !== null || firstVisit === false) {
-			setSteps({ run: false });
+			setTour(false);
 		}
 		fetchData();
 		return () => {
@@ -119,16 +71,34 @@ const Home = props => {
 		autoplay: true,
 		autoplaySpeed: 10000
 	};
-	const mobileCarouselIds = ['jtpl8syz', 'jtmoeqhx', 'jtmocwav', 'jtmoet1l'];
-	let carouselContent = carousel.map((c, i) => {
-		return (
-			<div key={c.unique_id}>
-				<Link to={`/content/${mobileCarouselIds[i]}`}>
-					<SliderPoster src={c.poster} />
-				</Link>
-			</div>
-		);
-	});
+	// const mobileCarouselIds = ['jtpl8syz', 'jtmoeqhx', 'jtmocwav', 'jtmoet1l'];
+	// let carouselContent = carousel.map((c, i) => {
+	// 	return (
+	// 		<div key={c.unique_id}>
+	// 			<Link to={`/content/${mobileCarouselIds[i]}`}>
+	// 				{console.log(c.title, c.poster)}
+	// 				<SliderPoster src={c.poster} />
+	// 			</Link>
+	// 		</div>
+	// 	);
+	// });
+	const cContent = (
+		<Slider {...settings}>
+			<SliderPoster src={carouselPoster} />
+			<Link to="/content/jtpl8syz">
+				<SliderPoster src="https://m.media-amazon.com/images/G/01/digital/video/sonata/Hero_PV_IN_Manikarnika/46acd23c-1702-493b-b3d7-d58c8617059b._UR1280,600_SX1500_FMjpg_.jpg" />
+			</Link>
+			<Link to="/content/jtmoeqhx">
+				<SliderPoster src="https://firebasestorage.googleapis.com/v0/b/teacher-booth.appspot.com/o/Bingy%2Fmirzapur.jpg?alt=media&token=8573d08a-a223-47ff-b735-7420e47adbfe" />
+			</Link>
+			<Link to="/content/jtmocwav">
+				<SliderPoster src="https://firebasestorage.googleapis.com/v0/b/teacher-booth.appspot.com/o/Bingy%2Fsuits.png?alt=media&token=461ec5c9-b411-4f03-9c31-cde00581426d" />
+			</Link>
+			<Link to="/content/jtmoet1l">
+				<SliderPoster src="https://firebasestorage.googleapis.com/v0/b/teacher-booth.appspot.com/o/Bingy%2Fmade-in-heavan.png?alt=media&token=43fac77b-f16d-4977-a75a-9b316105b947" />
+			</Link>
+		</Slider>
+	);
 	let desktopCarouselContent = (
 		<Slider {...settings}>
 			<Link to="/content/jtpl8syz">
@@ -145,35 +115,46 @@ const Home = props => {
 			</Link>
 		</Slider>
 	);
+	const steps = [
+		{
+			selector: '.desc_content_role',
+			content: (
+				<h2 style={{ color: '#000' }}>
+					Hey there! Find where to stream your content by clicking on the movie
+					poster
+				</h2>
+			)
+		},
+		{
+			selector: '.desc_search_role',
+			content: (
+				<h2 style={{ color: '#000' }}>
+					Search your favorite movies and shows to binge
+				</h2>
+			)
+		}
+		// ...
+	];
 	return loading ? (
 		<Spinner />
 	) : (
 		<div>
-			<ReactJoyride
-				scrollToFirstStep
-				callback={handleJoyrideCallback}
-				continuous
-				run={steps.run}
-				steps={steps.s}
-				styles={{
-					options: {
-						zIndex: 999999
-					}
-				}}
-				showProgress
-				showSkipButton
-			/>
+			{/* <Tour
+				steps={steps}
+				isOpen={tour}
+				onRequestClose={handleTourCallback}
+				disableInteraction
+				accentColor="#000"
+				lastStepNextButton={<button>Done! Let's start playing</button>}
+			/> */}
 			<SliderContainer className="desc_carousel_role">
-				{props.view.isDesktop ? (
-					desktopCarouselContent
-				) : (
-					<Slider {...settings}>{carouselContent}</Slider>
-				)}
+				{props.view.isDesktop ? desktopCarouselContent : cContent}
 			</SliderContainer>
 			<MovieSection movieData={movieData} />
 		</div>
 	);
 };
+
 const mapStateToProps = state => {
 	return {
 		view: state.screenView

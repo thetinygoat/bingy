@@ -250,11 +250,20 @@ const ContentPage = props => {
 		ReactGA.pageview(`/content/${props.match.params.id}`);
 		window.scrollTo(0, 0);
 		fetchFullContentData();
+		if (contentData.title) {
+			document.title =
+				'Watch ' +
+				contentData.title +
+				' on ' +
+				contentData.offers.map(offer => {
+					return offer.provider_mapping;
+				});
+		}
 		return () => {
 			clearTimeout(notification.timeOut);
 			setLoading(true);
 		};
-	}, [props.match.params.id]);
+	}, [props.match.params.id, contentData.title]);
 
 	const [shortDescriptionState, setShortDescriptionState] = useState(true);
 	let description;
