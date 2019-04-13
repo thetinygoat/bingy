@@ -23,8 +23,12 @@ const Home = props => {
 	const [movieData, setMovieData] = useState([]);
 	// const [carousel, setCarousel] = useState([]);
 	const fetchData = async () => {
+		let headers = {
+			pwa_jwt: localStorage.getItem('guest_jwt')
+		};
 		let res = await axios.post(
-			'https://peaceful-temple-71507.herokuapp.com/homeFeed'
+			'https://peaceful-temple-71507.herokuapp.com/homeFeed',
+			{ headers: headers }
 		);
 		// let data = res.data;
 		// let finalData = Object.keys(data).map(key => {
@@ -42,13 +46,13 @@ const Home = props => {
 	useEffect(() => {
 		async function setGuestJWT() {
 			let headers = {
-				'Content-Type': 'application/json',
 				pwa_jwt: localStorage.getItem('guest_jwt')
 			};
 			const res = await axios.post(
 				'https://peaceful-temple-71507.herokuapp.com/api/guests/newSession',
 				{ headers: headers }
 			);
+			console.log(res.data);
 		}
 		setGuestJWT();
 		document.title = 'Bingy | Watch and find movies and shows online';
