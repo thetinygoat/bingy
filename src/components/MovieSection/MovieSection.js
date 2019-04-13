@@ -17,19 +17,14 @@ const Container = styled.section`
 	}
 `;
 const MovieSection = ({ movieData }) => {
-	// console.log(props.movieData);
 	return (
 		<div>
 			{movieData.map(category => {
 				return (
 					<Container key={category.name} className="desc_content_role">
-						<SubHeading>
-							{(category.name.charAt(0).toUpperCase() + category.name.slice(1))
-								.split('_')
-								.join(' ')}
-						</SubHeading>
+						<SubHeading>{category.name}</SubHeading>
 						<MovieSectionContainer>
-							<MovieScroller data={category.data} />
+							<MovieScroller data={category.list} />
 						</MovieSectionContainer>
 					</Container>
 				);

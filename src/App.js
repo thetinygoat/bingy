@@ -4,12 +4,13 @@ import { mobileView, desktopView } from './store/actions/actions';
 import Home from './pages/Home/Home';
 import ContentPage from './pages/ContentPage/ContentPage';
 import BottomBar from './components/BottomBar/BottomBar';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import Search from './pages/Search/Search';
 import Profile from './pages/Profile/Profile';
 import MobileLogin from './pages/MobileLogin/MobileLogin';
 import ReactGA from 'react-ga';
+import jwt from 'jsonwebtoken';
 ReactGA.initialize('UA-136783569-1');
 
 class App extends Component {
@@ -17,6 +18,13 @@ class App extends Component {
 		loggedIn: false
 	};
 	componentWillMount() {
+		const privateKey =
+			'8eee650f35aa91650a1b6de7353454cdc9e2ae7420fff0d9137d460559df85a0';
+		const token = jwt.sign({ type: 'guest' }, privateKey);
+		const guestJWT = localStorage.getItem('guest_jwt');
+		if (!guestJWT) {
+			localStorage.setItem('guest_jwt', token);
+		}
 		window.addEventListener('load', () => {
 			if (window.innerWidth > 730) {
 				this.props.handleDesktopView();

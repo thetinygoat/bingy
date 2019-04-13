@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../../axios';
+import ax from 'axios';
 import styled from 'styled-components';
 import Offers from '../../components/Offers/Offers';
 import rotten from './rotten.png';
@@ -221,7 +222,6 @@ const ContentPage = props => {
 		let res = await axios.post('/movie-page', {
 			unique_id: props.match.params.id
 		});
-		console.log(res.data);
 		let movieData = res.data.movie;
 		let reccomendedData = res.data.reccomended_movies;
 		let imdbRating, tomatoRating;
@@ -249,6 +249,17 @@ const ContentPage = props => {
 	};
 	useEffect(() => {
 		ReactGA.pageview(`/content/${props.match.params.id}`);
+		async function sendTelemetry() {
+			let headers = {
+				'Content-Type': 'application/json',
+				pwa_jwt: localStorage.getItem('guest_jwt')
+			};
+			const res = await ax.post(
+				'https://peaceful-temple-71507.herokuapp.com/api/guests/logTitlePage',
+				{ headers: headers, unique_id: props.match.params.id }
+			);
+		}
+		sendTelemetry();
 		window.scrollTo(0, 0);
 		fetchFullContentData();
 		if (contentData.title) {

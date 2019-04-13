@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { logout } from '../../store/actions/actions';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from '../../axios';
 import { Poster } from '../../components/Poster';
@@ -73,19 +73,19 @@ const SubHeading = styled.h1`
 		margin: 0.5em;
 	}
 `;
-const Logout = styled.button`
-	width: 20%;
-	padding: 0.8em;
-	border-radius: 4px;
-	border: none;
-	cursor: pointer;
-	background-color: red;
-	color: #fff;
-	font-weight: bold;
-	@media (max-width: 730px) {
-		margin: 1em auto;
-	}
-`;
+// const Logout = styled.button`
+// 	width: 20%;
+// 	padding: 0.8em;
+// 	border-radius: 4px;
+// 	border: none;
+// 	cursor: pointer;
+// 	background-color: red;
+// 	color: #fff;
+// 	font-weight: bold;
+// 	@media (max-width: 730px) {
+// 		margin: 1em auto;
+// 	}
+// `;
 const Scroller = styled.div`
 	display: flex;
 	overflow: auto;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from '../../axios';
+import axios from 'axios';
 import MovieSection from '../../components/MovieSection/MovieSection';
 import Slider from 'react-slick';
 import styled from 'styled-components';
@@ -18,33 +18,40 @@ const SliderPoster = styled.img`
 		transform: scale(0.9);
 	}
 `;
-const Hoc = props => {
-	return props.children;
-};
 const Home = props => {
 	const [loading, setLoading] = useState(true);
 	const [movieData, setMovieData] = useState([]);
-	const [carousel, setCarousel] = useState([]);
+	// const [carousel, setCarousel] = useState([]);
 	const fetchData = async () => {
-		let res = await axios.get('/home-page2');
-		let data = res.data;
-		let finalData = Object.keys(data)
-			.filter(key => {
-				return key !== 'corousel';
-			})
-			.map(key => {
-				return { data: [...data[key]], name: key };
-			});
-		if (data) {
-			setLoading(false);
-			setMovieData(finalData);
-			setCarousel(data.corousel);
-		}
+		let res = await axios.post(
+			'https://peaceful-temple-71507.herokuapp.com/homeFeed'
+		);
+		// let data = res.data;
+		// let finalData = Object.keys(data).map(key => {
+		// 	console.log(key);
+		// });
+		// if (data) {
+		// 	setLoading(false);
+		// 	setMovieData(finalData);
+		// 	setCarousel(data.corousel);
+		// }
+		const data = res.data;
+		setMovieData(data);
+		setLoading(false);
 	};
 	useEffect(() => {
+		async function setGuestJWT() {
+			let headers = {
+				'Content-Type': 'application/json',
+				pwa_jwt: localStorage.getItem('guest_jwt')
+			};
+			const res = await axios.post(
+				'https://peaceful-temple-71507.herokuapp.com/api/guests/newSession',
+				{ headers: headers }
+			);
+		}
+		setGuestJWT();
 		document.title = 'Bingy | Watch and find movies and shows online';
-		let firstVisit = localStorage.getItem('firstVisit');
-		console.log(firstVisit);
 		fetchData();
 		return () => {
 			setLoading(true);

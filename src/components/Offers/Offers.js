@@ -17,12 +17,15 @@ import voot from './logos/voot.jpeg';
 import youtube from './logos/youtube.jpeg';
 import zee5 from './logos/zee5.jpeg';
 import styled from 'styled-components';
+import ax from 'axios';
+import { withRouter } from 'react-router-dom';
 const Offer = styled.img`
 	width: 60px;
 	height: 60px;
 	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 	border-radius: 200px;
 	margin: 0.3em;
+	cursor: pointer;
 `;
 
 const OfferContainer = styled.div`
@@ -42,11 +45,12 @@ const OfferProviderContainer = styled.div`
 		text-align: center;
 	}
 `;
-export default function Offers(props) {
+function Offers(props) {
+	async function sendTelemetry() {}
 	let freeArray = [];
 	let subArray = [];
 	let rentArray = [];
-	const offers = props.offers.map(offer => {
+	props.offers.map(offer => {
 		let src = null;
 		switch (offer.provider_mapping) {
 		case 'iTunes':
@@ -113,7 +117,8 @@ export default function Offers(props) {
 				const offerObj = {
 					name: offer.provider_mapping,
 					link: offer.urls.standard_web,
-					src: src
+					src: src,
+					id: offer.provider_id
 				};
 				freeArray.push(offerObj);
 			}
@@ -121,7 +126,8 @@ export default function Offers(props) {
 				const offerObj = {
 					name: offer.provider_mapping,
 					link: offer.urls.standard_web,
-					src: src
+					src: src,
+					id: offer.provider_id
 				};
 				subArray.push(offerObj);
 			}
@@ -132,23 +138,12 @@ export default function Offers(props) {
 				const offerObj = {
 					name: offer.provider_mapping,
 					link: offer.urls.standard_web,
-					src: src
+					src: src,
+					id: offer.provider_id
 				};
 				rentArray.push(offerObj);
 			}
-			console.log(
-				'free array',
-				freeArray,
-				'rent array',
-				rentArray,
-				'subarray',
-				subArray
-			);
-			return (
-				<a href={offer.urls.standard_web} key={offer.provider_mapping}>
-					<Offer src={src} alt={offer.provider_mapping} />
-				</a>
-			);
+			return null;
 		}
 	});
 	return (
@@ -157,7 +152,25 @@ export default function Offers(props) {
 				<OfferProviderContainer>
 					<h3 style={{ margin: '10px' }}>Free</h3>
 					{freeArray.map(provider => (
-						<Offer src={provider.src} />
+						<Offer
+							src={provider.src}
+							key={provider.name}
+							onClick={async () => {
+								window.open(provider.link, '_blank');
+								let headers = {
+									'Content-Type': 'application/json',
+									pwa_jwt: localStorage.getItem('guest_jwt')
+								};
+								const res = await ax.post(
+									'https://peaceful-temple-71507.herokuapp.com/api/guests/logTitleOffering ',
+									{
+										headers: headers,
+										unique_id: props.match.params.id,
+										provider_id: provider.id.toString()
+									}
+								);
+							}}
+						/>
 					))}
 				</OfferProviderContainer>
 			)}
@@ -165,7 +178,25 @@ export default function Offers(props) {
 				<OfferProviderContainer>
 					<h3 style={{ margin: '10px' }}>Subscription</h3>
 					{subArray.map(provider => (
-						<Offer src={provider.src} />
+						<Offer
+							src={provider.src}
+							key={provider.name}
+							onClick={async () => {
+								window.open(provider.link, '_blank');
+								let headers = {
+									'Content-Type': 'application/json',
+									pwa_jwt: localStorage.getItem('guest_jwt')
+								};
+								const res = await ax.post(
+									'https://peaceful-temple-71507.herokuapp.com/api/guests/logTitleOffering ',
+									{
+										headers: headers,
+										unique_id: props.match.params.id,
+										provider_id: provider.id.toString()
+									}
+								);
+							}}
+						/>
 					))}
 				</OfferProviderContainer>
 			)}
@@ -173,10 +204,30 @@ export default function Offers(props) {
 				<OfferProviderContainer>
 					<h3 style={{ margin: '10px' }}>Rent</h3>
 					{rentArray.map(provider => (
-						<Offer src={provider.src} />
+						<Offer
+							src={provider.src}
+							key={provider.name}
+							onClick={async () => {
+								window.open(provider.link, '_blank');
+								let headers = {
+									'Content-Type': 'application/json',
+									pwa_jwt: localStorage.getItem('guest_jwt')
+								};
+								const res = await ax.post(
+									'https://peaceful-temple-71507.herokuapp.com/api/guests/logTitleOffering ',
+									{
+										headers: headers,
+										unique_id: props.match.params.id,
+										provider_id: provider.id.toString()
+									}
+								);
+							}}
+						/>
 					))}
 				</OfferProviderContainer>
 			)}
 		</OfferContainer>
 	);
 }
+
+export default withRouter(Offers);
