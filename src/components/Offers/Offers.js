@@ -32,9 +32,20 @@ const OfferContainer = styled.div`
 	width: 100%;
 	margin: auto;
 	box-sizing: border-box;
+	flex-direction: column;
+	@media (max-width: 730px) {
+	}
 `;
-
+const OfferProviderContainer = styled.div`
+	text-align: left;
+	@media (max-width: 730px) {
+		text-align: center;
+	}
+`;
 export default function Offers(props) {
+	let freeArray = [];
+	let subArray = [];
+	let rentArray = [];
 	const offers = props.offers.map(offer => {
 		let src = null;
 		switch (offer.provider_mapping) {
@@ -95,6 +106,44 @@ export default function Offers(props) {
 		if (offer.provider_mapping === 'BookmyShow') {
 			return null;
 		} else {
+			if (
+				offer.monetization_type === 'free' ||
+				offer.monetization_type === 'ads'
+			) {
+				const offerObj = {
+					name: offer.provider_mapping,
+					link: offer.urls.standard_web,
+					src: src
+				};
+				freeArray.push(offerObj);
+			}
+			if (offer.monetization_type === 'flatrate') {
+				const offerObj = {
+					name: offer.provider_mapping,
+					link: offer.urls.standard_web,
+					src: src
+				};
+				subArray.push(offerObj);
+			}
+			if (
+				offer.monetization_type === 'buy' ||
+				offer.monetization_type === 'rent'
+			) {
+				const offerObj = {
+					name: offer.provider_mapping,
+					link: offer.urls.standard_web,
+					src: src
+				};
+				rentArray.push(offerObj);
+			}
+			console.log(
+				'free array',
+				freeArray,
+				'rent array',
+				rentArray,
+				'subarray',
+				subArray
+			);
 			return (
 				<a href={offer.urls.standard_web} key={offer.provider_mapping}>
 					<Offer src={src} alt={offer.provider_mapping} />
@@ -102,5 +151,32 @@ export default function Offers(props) {
 			);
 		}
 	});
-	return <OfferContainer>{offers}</OfferContainer>;
+	return (
+		<OfferContainer>
+			{freeArray.length > 0 && (
+				<OfferProviderContainer>
+					<h3 style={{ margin: '10px' }}>Free</h3>
+					{freeArray.map(provider => (
+						<Offer src={provider.src} />
+					))}
+				</OfferProviderContainer>
+			)}
+			{subArray.length > 0 && (
+				<OfferProviderContainer>
+					<h3 style={{ margin: '10px' }}>Subscription</h3>
+					{subArray.map(provider => (
+						<Offer src={provider.src} />
+					))}
+				</OfferProviderContainer>
+			)}
+			{rentArray.length > 0 && (
+				<OfferProviderContainer>
+					<h3 style={{ margin: '10px' }}>Rent</h3>
+					{rentArray.map(provider => (
+						<Offer src={provider.src} />
+					))}
+				</OfferProviderContainer>
+			)}
+		</OfferContainer>
+	);
 }

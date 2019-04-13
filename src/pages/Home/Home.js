@@ -5,9 +5,7 @@ import Slider from 'react-slick';
 import styled from 'styled-components';
 import Spinner from '../../components/Spinner/Spinner';
 import { connect } from 'react-redux';
-import ReactJoyride, { STATUS } from 'react-joyride';
 import { Link } from 'react-router-dom';
-import Tour from 'reactour';
 import carouselPoster from './carousel.jpg';
 const SliderContainer = styled.section`
 	width: 100%;
@@ -27,11 +25,6 @@ const Home = props => {
 	const [loading, setLoading] = useState(true);
 	const [movieData, setMovieData] = useState([]);
 	const [carousel, setCarousel] = useState([]);
-	const [tour, setTour] = useState(true);
-	const handleTourCallback = () => {
-		setTour(false);
-		// localStorage.setItem('firstVisit', false);
-	};
 	const fetchData = async () => {
 		let res = await axios.get('/home-page2');
 		let data = res.data;
@@ -52,9 +45,6 @@ const Home = props => {
 		document.title = 'Bingy | Watch and find movies and shows online';
 		let firstVisit = localStorage.getItem('firstVisit');
 		console.log(firstVisit);
-		if (firstVisit !== null || firstVisit === false) {
-			setTour(false);
-		}
 		fetchData();
 		return () => {
 			setLoading(true);
@@ -115,26 +105,6 @@ const Home = props => {
 			</Link>
 		</Slider>
 	);
-	const steps = [
-		{
-			selector: '.desc_content_role',
-			content: (
-				<h2 style={{ color: '#000' }}>
-					Hey there! Find where to stream your content by clicking on the movie
-					poster
-				</h2>
-			)
-		},
-		{
-			selector: '.desc_search_role',
-			content: (
-				<h2 style={{ color: '#000' }}>
-					Search your favorite movies and shows to binge
-				</h2>
-			)
-		}
-		// ...
-	];
 	return loading ? (
 		<Spinner />
 	) : (

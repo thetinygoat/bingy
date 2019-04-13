@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { DebounceInput } from 'react-debounce-input';
 import { FixedHolder } from '../../components/Holder';
 import { Poster } from '../../components/Poster';
+import Spinner from '../../components/Spinner/Spinner';
 const Searchpage = styled.section`
 	position: fixed;
 	height: 100vh;
@@ -74,13 +75,15 @@ const Title = styled.p`
 class Search extends Component {
 	state = {
 		query: '',
-		data: []
+		data: [],
+		loading: false
 	};
 	searchMovies = async () => {
+		this.setState({ loading: true });
 		let res = await axios.post('/autocomplete', {
 			data: this.state.query
 		});
-		this.setState({ data: res.data.movies });
+		this.setState({ data: res.data.movies, loading: false });
 	};
 	handleChange = async e => {
 		this.setState({ query: e.target.value });
@@ -130,35 +133,45 @@ class Search extends Component {
 							/>
 						</SearchBarStyler>
 					</SearchBarContainer>
-					<Grid>
-						{this.state.data &&
-							this.state.data.map(movie => {
-								let url;
-								if (movie.poster) {
-									url = this.constructPosterUrl(movie.poster, movie.title);
-								}
-								return (
-									<Link
-										key={movie.unique_id}
-										to={`/content/${movie.unique_id}`}
-										onClick={this.props.closeSearch}
-									>
-										<Items>
-											{movie.poster ? (
-												<Poster src={url} />
-											) : (
-												<FixedHolder search>
-													{movie.title}({movie.original_release_year})
-												</FixedHolder>
-											)}
-											<Title>
-												{movie.title}({movie.original_release_year})
-											</Title>
-										</Items>
-									</Link>
-								);
-							})}
-					</Grid>
+					{!this.state.loading ? (
+						this.state.data && this.state.data.length > 0 ? (
+							<Grid>
+								{this.state.data &&
+									this.state.data.map(movie => {
+										let url;
+										if (movie.poster) {
+											url = this.constructPosterUrl(movie.poster, movie.title);
+										}
+										return (
+											<Link
+												key={movie.unique_id}
+												to={`/content/${movie.unique_id}`}
+												onClick={this.props.closeSearch}
+											>
+												<Items>
+													{movie.poster ? (
+														<Poster src={url} />
+													) : (
+														<FixedHolder search>
+															{movie.title}({movie.original_release_year})
+														</FixedHolder>
+													)}
+													<Title>
+														{movie.title}({movie.original_release_year})
+													</Title>
+												</Items>
+											</Link>
+										);
+									})}
+							</Grid>
+						) : (
+							<Grid>
+								<p style={{ zIndex: '99999' }}>Nothing Found</p>
+							</Grid>
+						)
+					) : (
+						<Spinner />
+					)}
 				</Container>
 			</Searchpage>
 		);
