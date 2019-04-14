@@ -23,6 +23,7 @@ const Offer = styled.img`
 	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 	border-radius: 200px;
 	margin: 0.3em;
+	cursor: pointer;
 `;
 
 const OfferContainer = styled.div`
@@ -136,14 +137,6 @@ export default function Offers(props) {
 				};
 				rentArray.push(offerObj);
 			}
-			console.log(
-				'free array',
-				freeArray,
-				'rent array',
-				rentArray,
-				'subarray',
-				subArray
-			);
 			return (
 				<a href={offer.urls.standard_web} key={offer.provider_mapping}>
 					<Offer src={src} alt={offer.provider_mapping} />
@@ -157,7 +150,11 @@ export default function Offers(props) {
 				<OfferProviderContainer>
 					<h3 style={{ margin: '10px' }}>Free</h3>
 					{freeArray.map(provider => (
-						<Offer src={provider.src} />
+						<Offer
+							key={provider.name}
+							src={provider.src}
+							onClick={() => window.open(provider.link, '_blank')}
+						/>
 					))}
 				</OfferProviderContainer>
 			)}
@@ -165,7 +162,11 @@ export default function Offers(props) {
 				<OfferProviderContainer>
 					<h3 style={{ margin: '10px' }}>Subscription</h3>
 					{subArray.map(provider => (
-						<Offer src={provider.src} />
+						<Offer
+							key={provider.name}
+							src={provider.src}
+							onClick={() => window.open(provider.link, '_blank')}
+						/>
 					))}
 				</OfferProviderContainer>
 			)}
@@ -173,7 +174,11 @@ export default function Offers(props) {
 				<OfferProviderContainer>
 					<h3 style={{ margin: '10px' }}>Rent</h3>
 					{rentArray.map(provider => (
-						<Offer src={provider.src} />
+						<Offer
+							key={provider.name}
+							src={provider.src}
+							onClick={() => window.open(provider.link, '_blank')}
+						/>
 					))}
 				</OfferProviderContainer>
 			)}
