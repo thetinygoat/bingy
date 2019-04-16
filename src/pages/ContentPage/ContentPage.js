@@ -219,10 +219,14 @@ const ContentPage = props => {
 	const [loading, setLoading] = useState(true);
 
 	const fetchFullContentData = async () => {
-		let res = await axios.post('/movie-page', {
-			unique_id: props.match.params.id
-		});
+		let res = await ax.post(
+			'https://peaceful-temple-71507.herokuapp.com/movie-page',
+			{
+				unique_id: props.match.params.id
+			}
+		);
 		let movieData = res.data.movie;
+		console.log(movieData);
 		let reccomendedData = res.data.reccomended_movies;
 		let imdbRating, tomatoRating;
 		movieData.scoring.map(m => {
@@ -309,7 +313,7 @@ const ContentPage = props => {
 		const BASE_URL = 'https://images.justwatch.com';
 		const TYPE = QUERY_ARRAY[1];
 		const ID = QUERY_ARRAY[2];
-		const RES = 's166';
+		const RES = 's592';
 		return `${BASE_URL}/${TYPE}/${ID}/${RES}/${title}`;
 	};
 	const handleWatchList = async () => {
@@ -441,7 +445,7 @@ const ContentPage = props => {
 					<PosterContainer>
 						{contentData.poster ? (
 							<Poster
-								src={contentData.poster}
+								src={constructPosterUrl(contentData.poster)}
 								alt={contentData.title}
 								key={contentData.poster}
 								contentPage

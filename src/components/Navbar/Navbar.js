@@ -41,11 +41,11 @@ const Action = styled.div`
 `;
 const Logo = styled.img`
 	display: block;
-	width: 30%;
+	width: 35%;
 	position: relative;
 	top: 3px;
 	@media (max-width: 730px) {
-		width: 25%;
+		width: 30%;
 	}
 `;
 const Avatar = styled.img`
